@@ -22,7 +22,7 @@
 - [x] Git 설정 + VSCode GitHub 연동
 
 ## 4) 수행 로그
-### 터미널 기초
+### 4-1 터미널 기초
 
 #### 절대 경로,상대경로
 ```bash
@@ -55,11 +55,23 @@ $ ls -l memo.txt
 
 $ chmod 755 memo.txt
 (실행 권한 추가)
+
 $ ls -l memo.txt
 -rwxr-xr-x  1 song0423ricky4374  song0423ricky4374  6  7 30 17:36 memo.txt   (변경 후, 755)
 ```
 
+#### 디렉토리권한 실습
+```bash
+$ mkdir test_dir
+$ ls -ld test_dir 
+drwxr-xr-x  2 song0423ricky4374  song0423ricky4374  64  7 30 17:49 test_dir   (변경 전, 755)
 
+$ chmod 700 test_dir
+$ ls -ld test_dir
+drwx------  2 song0423ricky4374  song0423ricky4374  64  7 30 17:49 test_dir   (변경 후, 700)
+```
+
+### 4-2 Docker(OrbStack) 설치 및 점검
 
 
 
