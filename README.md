@@ -200,24 +200,17 @@ cd webserver
 $ cat > site/index.html << 'EOF'
 <!DOCTYPE html>
 <html>
-<head><title>My Custom Server</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>My Custom Server</title>
+</head>
 <body>
   <h1>안녕하세요! 제가 만든 커스텀 nginx 이미지입니다 🐳</h1>
 </body>
 </html>
 EOF
-(#site 폴더 안에 index.html 파일을 생성하고, 여러 줄 내용을 한 번에 입력,EOF를 쓴 이유는 자꾸 VScode로 직접 만들떄 실수해서...)
-
-
-$ cat site/index.html
-<!DOCTYPE html>
-<html>
-<head><title>My Custom Server</title></head>
-<body>
-  <h1>안녕하세요! 제가 만든 커스텀 nginx 이미지입니다 🐳</h1>
-</body>
-</html>
-(# 파일이 정상적으로 생성됐는지 내용 확인)
+(#site 폴더 안에 index.html 파일을 생성하고, 여러 줄 내용을 한 번에 입력,EOF를 쓴 이유는 자꾸 VScode로 직접 만들떄 실수해서...
+nginx는 정적 파일(html)을 서비스할 때, 기본적으로 응답 헤더에 문자 인코딩을 명시안해서 깨짐으로 <head> 안에 <meta charset="UTF-8">넣어서 해결)
 ```
 
 #### Dockerfile 작성
@@ -245,10 +238,16 @@ $ docker build -t my-web:1.0 .
  => => naming to docker.io/library/my-web:1.0  
 ```
 
+#### 접속 확인(http://localhost:8080)
+8080사진 참고
 
+#### 접속 확인 (http://localhost:8081)
+```bash
+$ docker run -d -p 8081:80 --name my-web-8081 my-web:1.0
+f4ca0851a0267827b4145c9bb099513ddf3945157ae741957a3d2bd665bdf502
 
-
-
+```
+8081사진 참고
 
 
 
