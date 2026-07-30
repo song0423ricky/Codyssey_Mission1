@@ -320,7 +320,11 @@ branch.main.merge=refs/heads/main
 (# 전체 Git 설정 확인)
 ```
 
+#### 로컬 저장소 초기화 및 GitHub 연동
 
+#### GitHub에서 저장소 만들기
+
+#### VS Code에서 GitHub 로그인 및 연동
 
 
 
