@@ -298,11 +298,27 @@ hi
 (# 새 컨테이너에서도 이전 데이터가 남아있는지 확인 → 삭제 전과 동일하게 "hi" 출력됨)
 ```
 
+### 4-7 Git 설정 + GitHub + VS Code 연동
 
+#### Git 사용자 정보 & 기본 브랜치 설정
+```bash
+$ git config --global user.name "song0423ricky"
+(# 커밋에 기록될 사용자 이름 설정)
 
+$ git config --global user.email "song0423ricky@gmail.com"
+(# 커밋에 기록될 사용자 이메일 설정)
 
-
-
+$ git config --list
+credential.helper=osxkeychain
+user.name=song0423ricky
+user.email=song0423ricky@gmail.com
+core.repositoryformatversion=0
+...
+remote.origin.url=https://github.com/song0423ricky/Codyssey_Mission1.git
+branch.main.remote=origin
+branch.main.merge=refs/heads/main
+(# 전체 Git 설정 확인)
+```
 
 
 
