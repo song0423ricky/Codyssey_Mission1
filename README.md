@@ -73,6 +73,55 @@ drwx------  2 song0423ricky4374  song0423ricky4374  64  7 30 17:49 test_dir   (�
 
 ### 4-2 Docker(OrbStack) 설치 및 점검
 
+#### Docker(OrbStack)설치, 데몬(백그라운드 프로그램) 동작 확인
+```bash
+$ docker --version
+Docker version 28.5.2, build ecc6942
+
+$ docker info
+Client:
+ Version:    28.5.2
+ Context:    orbstack
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.29.1
+    Path:     /Users/song0423ricky4374/.docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.40.3
+    Path:     /Users/song0423ricky4374/.docker/cli-plugins/docker-compose
+    
+중략... 
+
+WARNING: DOCKER_INSECURE_NO_IPTABLES_RAW is set
+(orbstack이 dorker와 iptables raw 규칙이 달라서 생기는 경고)
+```
+
+
+### 4-3 Docker 기본 운영 명령 익히기
+
+#### 기본운영명령, hello-world 실행
+```bash
+$ docker images
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+ubuntu        latest    de7345b16e94   2 weeks ago    100MB
+hello-world   latest    e2ac70e7319a   4 months ago   10.1kB
+
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+(실행 중인 컨테이너 없음)
+
+$ docker ps -a
+CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                     PORTS     NAMES
+104f2e839d87   ubuntu        "bash"     8 minutes ago   Exited (0) 5 minutes ago             my-ubuntu
+4367b013568c   hello-world   "/hello"   9 minutes ago   Exited (0) 9 minutes ago             naughty_williamson
+```
+
+
+
+
+
+
 
 
 
@@ -113,11 +162,12 @@ drwx------  2 song0423ricky4374  song0423ricky4374  64  7 30 17:49 test_dir   (�
 (VS Code GitHub 로그인 스크린샷)
 
 ## 9) 트러블슈팅
-### 사례 1
-- 문제:
-- 원인 가설:
-- 확인:
-- 해결:
+
+### 사례1: docker 명령어를 찾을 수 없음
+- 문제: `docker --version` 입력 시 `zsh: command not found: docker` 발생
+- 원인 가설: OrbStack 앱이 실행되어 있지 않아 Docker 엔진 및 CLI 연결이 활성화되지 않음
+- 확인: 메뉴바에 OrbStack 아이콘이 없는 것을 확인
+- 해결: OrbStack 앱 실행 후 재시도 → 정상적으로 버전 출력됨
 
 ### 사례 2
 - 문제:
