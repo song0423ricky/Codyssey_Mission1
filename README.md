@@ -21,7 +21,7 @@
 ## 3) 수행 로그
 ### 터미널 기초
 
-####3-1 절대 경로,상대경로
+#### 3-1 절대 경로,상대경로
 $ pwd
 /Users/song0423ricky4374/Codessey_Mission1/Codyssey_Mission1/practice   (절대 경로)
 
