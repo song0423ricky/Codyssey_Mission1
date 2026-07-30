@@ -299,9 +299,11 @@ hi
 ```
 
 ### 4-7 Git 설정 + GitHub + VS Code 연동
-
-#### Git 사용자 정보 & 기본 브랜치 설정
 ```bash
+$ git --version
+git version 2.53.0
+(# Git 버전 확인)
+
 $ git config --global user.name "song0423ricky"
 (# 커밋에 기록될 사용자 이름 설정)
 
@@ -312,20 +314,57 @@ $ git config --list
 credential.helper=osxkeychain
 user.name=song0423ricky
 user.email=song0423ricky@gmail.com
-core.repositoryformatversion=0
-...
+...중략
 remote.origin.url=https://github.com/song0423ricky/Codyssey_Mission1.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
 branch.main.remote=origin
 branch.main.merge=refs/heads/main
-(# 전체 Git 설정 확인)
+branch.main.vscode-merge-base=origin/main
+(# 전체 Git 설정 확인 (원격 저장소 연결 상태 포함))
+
+$ git status
+현재 브랜치 main
+브랜치가 'origin/main'에 맞게 업데이트된 상태입니다.
+추적하지 않는 파일:
+        practice/
+        webserver/
+(# 지금까지 작업한 폴더 상태 확인 (아직 커밋 안 된 파일 확인))
+
+$ git add .
+$ git status
+커밋할 변경 사항:
+        새 파일:       practice/memo.txt
+        새 파일:       webserver/Dockerfile
+        새 파일:       webserver/site/index.html
+(# 변경된 파일들을 커밋 대상으로 추가)
+
+$ git commit -m "터미널 실습 및 커스텀 nginx Dockerfile 추가"
+[main db99cc9] 터미널 실습 및 커스텀 nginx Dockerfile 추가
+ 3 files changed, 19 insertions(+)
+ create mode 100755 practice/memo.txt
+ create mode 100644 webserver/Dockerfile
+ create mode 100644 webserver/site/index.html
+(# 커밋 (변경 이력 기록))
+
+$ git push origin main
+ ! [rejected]        main -> main (fetch first)
+(# GitHub에 업로드 시도 → 원격에 로컬에 없는 커밋이 있어 거부됨)
+
+$ git config pull.rebase false
+(# 병합 방식을 merge로 지정)
+
+$ git pull origin main
+error: there was a problem with the editor 'vi'
+(# 원격 변경사항 받아오기)
+
+$ git commit -m "Merge remote-tracking branch origin/main"
+[main be1fcee] Merge remote-tracking branch origin/main
+(# 편집기 오류로 자동 커밋이 안 되어 수동으로 병합 커밋 완료)
+
+$ git push origin main
+   fd7e0f2..be1fcee  main -> main
+(# 다시 업로드 → 성공)
 ```
-
-#### 로컬 저장소 초기화 및 GitHub 연동
-
-#### GitHub에서 저장소 만들기
-
-#### VS Code에서 GitHub 로그인 및 연동
-
 
 
 
