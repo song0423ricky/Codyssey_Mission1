@@ -25,12 +25,13 @@
 ### 터미널 기초
 
 #### 절대 경로,상대경로
-
+```bash
 $ pwd
 /Users/song0423ricky4374/Codessey_Mission1/Codyssey_Mission1/practice   (절대 경로)
 
 $ cd ..        (상대 경로로 상위 이동)
 $ cd practice  (상대 경로로 다시 진입)
+```
 
 ​```bash
 (여기에 pwd, ls -la, chmod 등 명령+결과)
