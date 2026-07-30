@@ -235,13 +235,19 @@ $ docker build -t my-web:1.0 .
  => [internal] load build definition from Dockerfile                                                                                   0.2s
 (...중략)
  => => writing image sha256:d9f3fde493d615d3e1ab37a7cddba5eabf5ed421591bc090ee7238cca2278425                                           0.0s
- => => naming to docker.io/library/my-web:1.0  
+ => => naming to docker.io/library/my-web:1.0
+
+$ docker images
+(# my-web:1.0이 생겼는지 확인)
+
+$ docker run -d -p 8080:80 --name my-web-8080 my-web:1.0
+(-p 8080:80 = 포트 매핑: 내 컴퓨터의 8080번 포트로 들어오는 요청을 컨테이너 내부 80번 포트로 연결해준다는 뜻)
 ```
 
 #### 접속 확인(http://localhost:8080)
 8080사진 참고
 
-#### 접속 확인 (http://localhost:8081)
+#### 접속 확인-예제에서 포트 8081로도 접속해서  (http://localhost:8081)
 ```bash
 $ docker run -d -p 8081:80 --name my-web-8081 my-web:1.0
 f4ca0851a0267827b4145c9bb099513ddf3945157ae741957a3d2bd665bdf502
