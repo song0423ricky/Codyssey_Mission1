@@ -27,23 +27,30 @@
 #### 절대 경로,상대경로
 ```bash
 $ pwd
-/Users/song0423ricky4374/Codessey_Mission1/Codyssey_Mission1/practice   (절대 경로)
+/Users/song0423ricky4374/Codessey_Mission1/Codyssey_Mission1/practice
+(절대 경로)
 
-$ cd ..        (상대 경로로 상위 이동)
-$ cd practice  (상대 경로로 다시 진입)
+$ cd ..
+(상대 경로로 상위 이동)
+
+$ cd practice
+(상대 경로로 다시 진입)
 ```
 
 #### 파일/폴더 기본 조작
 ```bash
 $ cp memo.txt memo_copy.txt
+
 $ ls -la
 (memo.txt, memo_copy.txt 둘 다 존재)
 
 $ mv memo_copy.txt memo_renamed.txt
+
 $ ls -la
 (memo_renamed.txt로 이름 변경 확인)
 
 $ rm memo_renamed.txt
+
 $ ls -la
 (memo.txt만 남음)
 ```
@@ -63,10 +70,12 @@ $ ls -l memo.txt
 #### 디렉토리권한 실습
 ```bash
 $ mkdir test_dir
+
 $ ls -ld test_dir 
 drwxr-xr-x  2 song0423ricky4374  song0423ricky4374  64  7 30 17:49 test_dir   (변경 전, 755)
 
 $ chmod 700 test_dir
+
 $ ls -ld test_dir
 drwx------  2 song0423ricky4374  song0423ricky4374  64  7 30 17:49 test_dir   (변경 후, 700)
 ```
@@ -168,9 +177,9 @@ $ docker exec -it keep-alive bash
 (# 실행 중인 keep-alive 컨테이너 안에 "추가 세션"으로 들어감)
 
 root@2ff82e583cde:/# echo "still running"
+still running
 (# 컨테이너 내부에서 명령어 실행 확인)
 
-still running
 root@2ff82e583cde:/# exit
 (# exec로 연 세션에서 나가기 (메인 프로세스는 그대로 살아있음))
 
@@ -185,6 +194,7 @@ CONTAINER ID   IMAGE     COMMAND            CREATED              STATUS         
 #### 폴더 만들기
 ```bash
 mkdir -p webserver/site
+
 cd webserver
 
 $ cat > site/index.html << 'EOF'
@@ -196,7 +206,7 @@ $ cat > site/index.html << 'EOF'
 </body>
 </html>
 EOF
-(site 폴더 안에 index.html 파일을 생성하고, 여러 줄 내용을 한 번에 입력)
+(#site 폴더 안에 index.html 파일을 생성하고, 여러 줄 내용을 한 번에 입력,EOF를 쓴 이유는 자꾸 VScode로 직접 만들떄 실수해서...)
 
 
 $ cat site/index.html
@@ -222,6 +232,7 @@ ENV APP_ENV=dev
 COPY site/ /usr/share/nginx/html/
 (# 내가 만든 site 폴더의 정적 페이지로 nginx 기본 페이지를 교체)
 EOF
+
 ```
 
 #### 빌드 및 실행
@@ -233,6 +244,24 @@ $ docker build -t my-web:1.0 .
  => => writing image sha256:d9f3fde493d615d3e1ab37a7cddba5eabf5ed421591bc090ee7238cca2278425                                           0.0s
  => => naming to docker.io/library/my-web:1.0  
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -280,12 +309,12 @@ $ docker build -t my-web:1.0 .
 
 ### 사례1: docker 명령어를 찾을 수 없음
 - 문제: `docker --version` 입력 시 `zsh: command not found: docker` 발생
-- 원인 가설: OrbStack 앱이 실행되어 있지 않아 Docker 엔진 및 CLI 연결이 활성화되지 않음
+- 원인: OrbStack 앱이 실행되어 있지 않아 Docker 엔진 및 CLI 연결이 활성화되지 않음
 - 확인: 메뉴바에 OrbStack 아이콘이 없는 것을 확인
 - 해결: OrbStack 앱 실행 후 재시도 → 정상적으로 버전 출력됨
 
-### 사례 2
-- 문제:
-- 원인 가설:
-- 확인:
-- 해결:
+### 사례2: nginx 웹페이지 한글 깨짐
+- 문제: 브라우저에서 index.html 접속 시 한글이 깨짐
+- 원인: HTML에 문자 인코딩(charset) 명시가 없어 브라우저가 잘못 해석할 가능성
+- 확인: <head> 안에 charset 메타태그 부재 확인
+- 해결: <meta charset="UTF-8"> 추가 후 재빌드/재실행하여 정상 표시 확인
