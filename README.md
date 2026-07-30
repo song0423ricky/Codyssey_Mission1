@@ -366,48 +366,7 @@ $ git push origin main
 (# 다시 업로드 → 성공)
 ```
 
-
-
-
-
-
-
-
-
-
-​```bash
-(여기에 pwd, ls -la, chmod 등 명령+결과)
-​```
-### Docker 점검
-​```bash
-(docker --version, docker info 결과)
-​```
-
-### 컨테이너 실행 실습
-​```bash
-(hello-world, ubuntu 진입 로그)
-​```
-
-## 5) 커스텀 Dockerfile
-- 베이스: nginx:alpine
-- 커스텀 포인트: (요약)
-​```dockerfile
-(Dockerfile 전체 내용)
-​```
-
-## 6) 포트 매핑 접속 증거
-(브라우저 스크린샷 또는 curl 결과, 2회분)
-
-## 7) 바인드 마운트 / 볼륨 영속성
-(변경 전/후, 삭제 전/후 비교 로그)
-
-## 8) Git/GitHub 연동
-​```bash
-(git config --list 결과)
-​```
-(VS Code GitHub 로그인 스크린샷)
-
-## 9) 트러블슈팅
+## 5) 트러블슈팅
 
 ### 사례1: docker 명령어를 찾을 수 없음
 - 문제: `docker --version` 입력 시 `zsh: command not found: docker` 발생
