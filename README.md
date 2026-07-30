@@ -258,11 +258,11 @@ f4ca0851a0267827b4145c9bb099513ddf3945157ae741957a3d2bd665bdf502
 ### 4-5 바인드마운트실습
 
 #### 바인드마운트
+바인드마운트:호스트 컴퓨터의 특정 폴더나 파일을 도커 컨테이너 안의 경로에 직접 연결하여 실시간으로 데이터를 공유하는 방식
 ```bash
 $ docker run -d -p 8082:80 --name my-web-bind -v $(pwd)/site:/usr/share/nginx/html my-web:1.0
 98498a843d1233a70ab9c407f96b96136aea2363e78683bed614e0a95149c603
-(바인드마운트:호스트 컴퓨터의 특정 폴더나 파일을 도커 컨테이너 안의 경로에 직접 연결하여 실시간으로 데이터를 공유하는 방식
-지금 폴더의 site를 컨테이너 내부 nginx html 폴더에 직접 연결)
+(지금 폴더의 site를 컨테이너 내부 nginx html 폴더에 직접 연결)
 ```
 
 #### site/index.html 파일 내용 변경 전
@@ -272,7 +272,31 @@ $ docker run -d -p 8082:80 --name my-web-bind -v $(pwd)/site:/usr/share/nginx/ht
 바인드 마운트 변경 후 사진 참고
 
 ### 4-6. Docker 볼륨 영속성 검증
+볼륨: 컨테이너를 지워도 데이터가 남아있게 해주는 저장공간. (컨테이너는 원래 지우면 안의 데이터도 같이 사라지는데, 볼륨에 저장한 데이터는 살아남는다.)
+```bash
+$ docker volume create mydata
+(# 데이터를 영구적으로 저장할 볼륨 생성)
 
+$ docker run -d --name vol-test -v mydata:/data ubuntu sleep infinity
+f27b69ec9337560ccf78038fc536ba26865183fbf0a948a473d92a4bf8c1fe5a
+(# mydata 볼륨을 컨테이너의 /data 경로에 연결해서 실행)
+
+$ docker exec -it vol-test bash -c "echo hi > /data/hello.txt && cat /data/hello.txt"
+hi
+(# 컨테이너 내부에서 /data(=볼륨)에 hello.txt 파일을 만들고 내용 확인)
+
+$ docker rm -f vol-test
+vol-test
+(# 컨테이너를 완전히 삭제)
+
+$ docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity
+795f0b3a6b75f2ae5684aff3be2b441ecae7dc00635c7354a7999148c0868853
+(# 같은 볼륨(mydata)을 새 컨테이너에 다시 연결해서 실행)
+
+$ docker exec -it vol-test2 bash -c "cat /data/hello.txt"
+hi
+(# 새 컨테이너에서도 이전 데이터가 남아있는지 확인 → 삭제 전과 동일하게 "hi" 출력됨)
+```
 
 
 
