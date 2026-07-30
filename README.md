@@ -147,7 +147,93 @@ root@f19eafa3998d:/# pwd
 root@f19eafa3998d:/# echo "hello from container"
 hello from container
 root@f19eafa3998d:/# exit
+
+$ docker stats --no-stream
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O   BLOCK I/O   PIDS
+(현재 실행 중인 컨테이너가 없어 표시할 내용 없음)
 ```
+
+#### 종료(exit) vs 유지(exec/attach) 차이 정리
+```bash
+$ docker run -d --name keep-alive ubuntu sleep infinity
+2ff82e583cdeccbfb24ae783722f8b582107db18696c9eff7f89e0e2c3961e43
+(# 백그라운드(-d)로 컨테이너를 계속 살아있게 실행,메인 프로세스: sleep infinity)
+
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND            CREATED          STATUS          PORTS     NAMES
+2ff82e583cde   ubuntu    "sleep infinity"   12 seconds ago   Up 11 seconds             keep-alive
+(# 실행 중인 컨테이너 목록 확인 → keep-alive가 Up 상태로 보임)
+
+$ docker exec -it keep-alive bash
+(# 실행 중인 keep-alive 컨테이너 안에 "추가 세션"으로 들어감)
+
+root@2ff82e583cde:/# echo "still running"
+(# 컨테이너 내부에서 명령어 실행 확인)
+
+still running
+root@2ff82e583cde:/# exit
+(# exec로 연 세션에서 나가기 (메인 프로세스는 그대로 살아있음))
+
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND            CREATED              STATUS              PORTS     NAMES
+2ff82e583cde   ubuntu    "sleep infinity"   About a minute ago   Up About a minute             keep-alive
+(다시 확인 → exit 했음에도 keep-alive는 여전히 Up 상태)
+```
+
+### 4-4. 커스텀 Dockerfile로 웹서버 만들기
+
+#### 폴더 만들기
+```bash
+mkdir -p webserver/site
+cd webserver
+
+$ cat > site/index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head><title>My Custom Server</title></head>
+<body>
+  <h1>안녕하세요! 제가 만든 커스텀 nginx 이미지입니다 🐳</h1>
+</body>
+</html>
+EOF
+(site 폴더 안에 index.html 파일을 생성하고, 여러 줄 내용을 한 번에 입력)
+
+
+$ cat site/index.html
+<!DOCTYPE html>
+<html>
+<head><title>My Custom Server</title></head>
+<body>
+  <h1>안녕하세요! 제가 만든 커스텀 nginx 이미지입니다 🐳</h1>
+</body>
+</html>
+(# 파일이 정상적으로 생성됐는지 내용 확인)
+```
+
+#### Dockerfile 작성
+```bash
+$ cat > Dockerfile << 'EOF'
+FROM nginx:alpine
+(# nginx:alpine을 베이스 이미지로 사용 (가볍고 빠른 웹서버))
+LABEL org.opencontainers.image.title="my-custom-nginx"
+(# 이미지에 이름표(메타데이터) 붙이기)
+ENV APP_ENV=dev
+(# 개발 환경임을 나타내는 환경변수 설정)
+COPY site/ /usr/share/nginx/html/
+(# 내가 만든 site 폴더의 정적 페이지로 nginx 기본 페이지를 교체)
+EOF
+```
+
+#### 빌드 및 실행
+```bash
+$ docker build -t my-web:1.0 .
+[+] Building 6.4s (7/7) FINISHED                                                                                            docker:orbstack
+ => [internal] load build definition from Dockerfile                                                                                   0.2s
+(...중략)
+ => => writing image sha256:d9f3fde493d615d3e1ab37a7cddba5eabf5ed421591bc090ee7238cca2278425                                           0.0s
+ => => naming to docker.io/library/my-web:1.0  
+```
+
 
 
 
