@@ -33,6 +33,22 @@ $ cd ..        (상대 경로로 상위 이동)
 $ cd practice  (상대 경로로 다시 진입)
 ```
 
+#### 파일/폴더 기본 조작
+```bash
+$ cp memo.txt memo_copy.txt
+$ ls -la
+(memo.txt, memo_copy.txt 둘 다 존재)
+
+$ mv memo_copy.txt memo_renamed.txt
+$ ls -la
+(memo_renamed.txt로 이름 변경 확인)
+
+$ rm memo_renamed.txt
+$ ls -la
+(memo.txt만 남음)
+```
+
+
 ​```bash
 (여기에 pwd, ls -la, chmod 등 명령+결과)
 ​```
