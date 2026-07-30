@@ -54,6 +54,7 @@ $ ls -l memo.txt
 -rw-r--r--  1 song0423ricky4374  song0423ricky4374  6  7 30 17:36 memo.txt   (변경 전, 644)
 
 $ chmod 755 memo.txt
+(실행 권한 추가)
 $ ls -l memo.txt
 -rwxr-xr-x  1 song0423ricky4374  song0423ricky4374  6  7 30 17:36 memo.txt   (변경 후, 755)
 ```
