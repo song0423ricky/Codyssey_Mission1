@@ -117,8 +117,37 @@ CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                  
 4367b013568c   hello-world   "/hello"   9 minutes ago   Exited (0) 9 minutes ago             naughty_williamson
 ```
 
+#### ubuntu 컨테이너 진입 실습
+```bash
+$ docker rm -f my-ubuntu
+my-ubuntu
 
+$ docker run -it --name my-ubuntu-v2 ubuntu bash
+root@f19eafa3998d:/# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@f19eafa3998d:/# pwd
+/
+root@f19eafa3998d:/# echo "hello from container"
+hello from container
+root@f19eafa3998d:/# exit
+```
 
+#### 로그 / 리소스 확인
+```bash
+$ docker ps -a
+CONTAINER ID   IMAGE         COMMAND    CREATED          STATUS                      PORTS     NAMES
+f19eafa3998d   ubuntu        "bash"     4 minutes ago    Exited (0) 4 minutes ago              my-ubuntu-v2
+4367b013568c   hello-world   "/hello"   22 minutes ago   Exited (0) 22 minutes ago             naughty_williamson
+
+$ docker logs my-ubuntu-v2
+root@f19eafa3998d:/# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@f19eafa3998d:/# pwd
+/
+root@f19eafa3998d:/# echo "hello from container"
+hello from container
+root@f19eafa3998d:/# exit
+```
 
 
 
