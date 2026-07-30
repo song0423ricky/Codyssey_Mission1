@@ -420,3 +420,9 @@ $ git push origin main
 - 원인: HTML에 문자 인코딩(charset) 명시가 없어 브라우저가 잘못 해석할 가능성
 - 확인: <head> 안에 charset 메타태그 부재 확인
 - 해결: <meta charset="UTF-8"> 추가 후 재빌드/재실행하여 정상 표시 확인
+
+### 사례 3: git push 시 rejected 에러 발생
+문제: git push origin main 실행 시 [rejected] main -> main (fetch first) 에러 발생
+원인 가설: GitHub 저장소에 로컬에는 없는 커밋이 이미 존재해 로컬과 원격 기록이 갈라짐(divergent)
+확인: git pull origin main 시도 시 "divergent branches" 경고 확인
+해결: git config pull.rebase false로 merge 방식 지정 후 pull, 편집기 오류로 자동 커밋이 안 되어 git commit -m "..."으로 수동 커밋 완료, 이후 git push origin main 성공
