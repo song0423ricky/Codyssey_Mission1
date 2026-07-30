@@ -261,8 +261,7 @@ f4ca0851a0267827b4145c9bb099513ddf3945157ae741957a3d2bd665bdf502
 ```bash
 $ docker run -d -p 8082:80 --name my-web-bind -v $(pwd)/site:/usr/share/nginx/html my-web:1.0
 98498a843d1233a70ab9c407f96b96136aea2363e78683bed614e0a95149c603
-(
-바인드마운트:호스트 컴퓨터의 특정 폴더나 파일을 도커 컨테이너 안의 경로에 직접 연결하여 실시간으로 데이터를 공유하는 방식
+(바인드마운트:호스트 컴퓨터의 특정 폴더나 파일을 도커 컨테이너 안의 경로에 직접 연결하여 실시간으로 데이터를 공유하는 방식
 지금 폴더의 site를 컨테이너 내부 nginx html 폴더에 직접 연결)
 ```
 
@@ -272,7 +271,7 @@ $ docker run -d -p 8082:80 --name my-web-bind -v $(pwd)/site:/usr/share/nginx/ht
 #### site/index.html 파일 내용 변경 후
 바인드 마운트 변경 후 사진 참고
 
-#### 4-6. Docker 볼륨 영속성 검증
+### 4-6. Docker 볼륨 영속성 검증
 
 
 
