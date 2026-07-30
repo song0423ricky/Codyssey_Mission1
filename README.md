@@ -48,11 +48,28 @@ $ ls -la
 (memo.txt만 남음)
 ```
 
+#### 파일권한 실습
+```bash
+$ ls -l memo.txt
+-rw-r--r--  1 song0423ricky4374  song0423ricky4374  6  7 30 17:36 memo.txt   (변경 전, 644)
+
+$ chmod 755 memo.txt
+$ ls -l memo.txt
+-rwxr-xr-x  1 song0423ricky4374  song0423ricky4374  6  7 30 17:36 memo.txt   (변경 후, 755)
+```
+
+
+
+
+
+
+
+
+
 
 ​```bash
 (여기에 pwd, ls -la, chmod 등 명령+결과)
 ​```
-
 ### Docker 점검
 ​```bash
 (docker --version, docker info 결과)
