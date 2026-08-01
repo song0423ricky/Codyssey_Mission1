@@ -43,11 +43,11 @@ $ cd ..
 $ cd practice
 # (상대 경로로 다시 진입)
 ```
-<명령어 정리>
-pwd
-Print Working Directory의 약자, 현재 폴더를 절대 경로로 화면에 출력
+<명령어 정리>  
+pwd  
+Print Working Directory의 약자, 현재 폴더를 절대 경로로 화면에 출력     
 
-cd
+cd  
 Change Directory의 약자,뒤에 이동할 경로를 붙여서 사용
 
 ### 4-2. 파일/폴더 기본 조작
