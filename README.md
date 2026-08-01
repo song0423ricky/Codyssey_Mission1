@@ -166,8 +166,8 @@ Server:
 `Context: orbstack`, `Operating System: OrbStack`을 통해 OrbStack 엔진으로 Docker CLI가 정상 연결되어 있음을 확인했다.
   
 <명령어 정리>    
-docker '명령어'  
-Docker CLI를 실행하는 기본 명령어  
+$ docker --version,$ docker info
+docker '명령어' = Docker CLI를 실행하는 기본 명령어  
 --version = 두 개의 하이픈(--)으로 시작하는 long option 형식, 지금 설치된 Docker CLI의 버전 정보를 출력하라는 옵션  
 info = information, 현재 연결된 Docker 엔진(OrbStack)의 전반적인 상태 정보(컨텍스트, 컨테이너/이미지 개수, OS 종류 등)를 자세히 출력함  
 
@@ -192,7 +192,16 @@ CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                  
 104f2e839d87   ubuntu        "bash"     8 minutes ago   Exited (0) 5 minutes ago             my-ubuntu
 4367b013568c   hello-world   "/hello"   9 minutes ago   Exited (0) 9 minutes ago             naughty_williamson
 ```
-
+<명령어 정리>    
+docker images. 
+지금까지 로컬 컴퓨터에 다운로드(pull)되어 저장된 이미지 목록을 전부 보여줌. 
+  
+docker ps. 
+process status,현재 실행 중인 컨테이너 목록만 보여줌. 
+  
+docker ps -a. 
+-a = all,실행 중인 것뿐 아니라, 멈춘(Exited) 컨테이너까지 포함한 전체 컨테이너 목록을 보여줌. 
+  
 ### 6-2. hello-world 실행
 
 ```bash
