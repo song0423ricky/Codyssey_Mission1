@@ -43,7 +43,7 @@ $ cd ..
 $ cd practice
 # (상대 경로로 다시 진입)
 ```
-[명령어 정리]
+<명령어 정리>
 pwd
 Print Working Directory의 약자, 현재 폴더를 절대 경로로 화면에 출력
 
