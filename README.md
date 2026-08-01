@@ -212,7 +212,11 @@ Status: Downloaded newer image for hello-world:latest
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```
-
+<명령어 정리>    
+docker run hello-world.  
+run = 이미지를 기반으로 새 컨테이너를 만들고 즉시 시작함  
+hello-world = Docker Hub(공용 이미지 저장소)에 있는 실행할 테스트용 공식 이미지 이름, 로컬에 이미지가 없으면 자동으로 Docker Hub에서 다운로드(pull)한 뒤 실행함  
+  
 ### 6-3. ubuntu 컨테이너 진입 실습
 
 ```bash
@@ -225,6 +229,14 @@ root@f19eafa3998d:/# echo "hello from container"
 hello from container
 root@f19eafa3998d:/# exit
 ```
+<명령어 정리>    
+docker run -it --name my-ubuntu-v2 ubuntu bash  
+-i = interactive,컨테이너의 표준 입력을 열어둬서, 사용자가 명령어를 입력할 수 있게 함  
+-t = teletypewriter(가상 터미널), 터미널 화면처럼 출력이 표시되도록 함  
+-it = -i와 -t를 합쳐 쓴 것,두 개를 함께 써야 실제로 터미널처럼 상호작용 가능한 컨테이너 접속이 됨  
+--name my-ubuntu-v2 = 컨테이너에 my-ubuntu-v2라는 별칭(이름)을 붙이는 옵션. 안 붙이면 Docker가 랜덤한 이름을 자동 생성함  
+ubuntu = 사용할 이미지 이름 (우분투 리눅스 배포판의 공식 이미지)  
+bash = 컨테이너 안에서 실행할 명령어. bash는 리눅스의 대표적인 셸(shell) 프로그램 이름으로, 이걸 실행하면 컨테이너 내부에서 명령어를 입력할 수 있는 상태가 됨  
 
 ### 6-4. 로그 / 리소스 확인
 
@@ -247,6 +259,14 @@ $ docker stats --no-stream
 CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O   BLOCK I/O   PIDS
 (실행 중인 컨테이너가 없어 표시할 내용 없음)
 ```
+<명령어 정리>    
+docker logs my-ubuntu-v2  
+logs = 컨테이너가 표준 출력(터미널 화면)에 남긴 기록을 다시 보여주는 하위 명령어  
+my-ubuntu-v2 = 로그를 확인할 대상 컨테이너의 이름,컨테이너가 정지된 상태여도, 살아있을 때 남긴 출력 기록은 그대로 조회 가능함  
+
+docker stats --no-stream
+stats = statistics, 실행 중인 컨테이너들의 CPU, 메모리, 네트워크, 디스크 사용량을 보여주는 하위 명령어, 옵션 없이 쓰면 실시간으로 계속 갱신되며 화면에 출력됨  
+--no-stream = "스트림(연속 갱신)을 하지 않는다"는 옵션, 현재 시점의 값을 딱 한 번만 출력하고 끝냄    
 
 ### 6-5. 종료(exit) vs 유지(exec) 차이 관찰
 
@@ -273,6 +293,17 @@ $ docker ps
 CONTAINER ID   IMAGE     COMMAND            CREATED              STATUS              PORTS     NAMES
 2ff82e583cde   ubuntu    "sleep infinity"   About a minute ago   Up About a minute             keep-alive
 ```
+<명령어 정리>    
+docker run -d --name keep-alive ubuntu sleep infinity  
+-d = detached, 컨테이너를 백그라운드에서 실행시키고, 터미널 제어권은 바로 사용자에게 돌려줌 (터미널이 컨테이너에 붙잡히지 않음)  
+sleep infinity = 컨테이너 안에서 실행할 명령어. sleep = 리눅스의 "일정 시간 동안 아무것도 안 하고 대기하는" 명령어, infinity = 영구히  
+→ 컨테이너가 영원히 살아있게 만드는 용도로 흔히 쓰임
+
+docker exec -it keep-alive bash
+exec = execute,이미 실행 중인 컨테이너 안에 추가로 새 명령어(세션)를 실행하는 하위 명령어 (run과 달리 새 컨테이너를 만들지 않음)  
+-it = 위와 동일 (상호작용 + 터미널)  
+keep-alive = 대상이 되는, 이미 실행 중인 컨테이너의 이름  
+bash = 그 컨테이너 안에서 실행할 셸 프로그램    
 
 **관찰 정리**: `my-ubuntu-v2`에서는 메인 프로세스(bash)를 직접 실행했기 때문에 `exit` 시 컨테이너가 함께 `Exited` 상태가 되었다. 반면 `keep-alive`는 메인 프로세스가 `sleep infinity`이고 `exec`는 그 위에 추가로 연 세션이었으므로, 그 세션에서 `exit`해도 메인 프로세스는 살아있어 컨테이너가 계속 `Up` 상태를 유지했다.
 
@@ -313,7 +344,48 @@ ENV APP_ENV=dev
 COPY site/ /usr/share/nginx/html/
 EOF
 ```
-
+<명령어 정리>    
+cat > site/index.html << 'EOF' ... EOF
+cat = 위에서 설명한 것과 동일하지만 여기서는 파일을 "읽는" 게 아니라 표준 입력을 그대로 받아서 출력하는 용도로 씀  
+'>' = 리다이렉션기호, 원래는 화면에 나갈 출력을, 화면 대신 지정한 파일로 보내라는 뜻. 파일이 없으면 새로 만들고, 있으면 기존 내용을 덮어씀  
+site/index.html = 출력을 저장할 대상 파일 경로  
+<< = 히어독(heredoc) 시작 기호, 여기부터 특정 표시가 나올 때까지의 여러 줄 전체를 입력으로 사용하겠다는 뜻  
+'EOF' = End Of File,히어독의 "끝을 표시하는 이름표"로 관습적으로 쓰는 단어일 뿐, 특별한 의미가 있는 예약어는 아님 (다른 단어로 바꿔도 동작함),작은따옴표로 감싸면 그 안의 내용에 변수 치환 등이 일어나지 않고 그대로 입력됨  
+마지막 줄의 단독 EOF = 히어독의 끝을 알리는 표시. 이 줄이 나오기 전까지 입력한 모든 줄이 파일에 그대로 저장됨  
+   
+<html 정리>. 
+    
+<!DOCTYPE html>. 
+HTML 문서의 종류(버전)를 브라우저에게 알려주는 선언. "이 문서는 HTML5 표준을 따른다"는 의미. 
+  
+<meta charset="UTF-8">. 
+meta = 문서 자체에 대한 부가 정보(메타데이터)를 담는 태그. 
+charset = character set(문자 집합)의 약자. 이 문서가 어떤 방식으로 글자를 인코딩했는지 지정. 
+UTF-8 = 한글을 포함한 전 세계 문자를 표현할 수 있는 표준 인코딩 방식 이름. 이걸 명시해야 브라우저가 한글을 올바르게 해석함. 
+  
+cat > Dockerfile << 'EOF' ... EOF. 
+위 index.html과 완전히 동일한 원리로, 이번엔 Dockerfile이라는 이름의 파일에 내용을 저장함. 
+  
+FROM nginx:alpine. 
+FROM = Dockerfile 전용 명령어,이 이미지를 만들 때 기반으로 삼을 베이스 이미지를 지정. 
+nginx = 사용할 이미지 이름 (웹서버 소프트웨어 nginx의 공식 이미지). 
+:alpine = 태그(tag). 콜론(:) 뒤에 붙어 이미지의 특정 버전/종류를 지정. alpine은 매우 가벼운 리눅스 배포판을 기반으로 만든 버전이라는 뜻. 
+  
+LABEL org.opencontainers.image.title="my-custom-nginx". 
+LABEL = Dockerfile 전용 명령어. 이미지에 이름-값 형태의 메타데이터(꼬리표)를 추가함. 
+org.opencontainers.image.title = 라벨의 키(key) 이름. OCI(Open Container Initiative)라는 표준 단체가 정한 "이미지 제목"을 나타내는 규칙적인 키 이름. 
+"my-custom-nginx" = 그 키에 대응하는 값. 여기서는 이미지의 제목으로 지정한 문자열. 
+  
+ENV APP_ENV=dev
+ENV = environment,Dockerfile 전용 명령어,컨테이너 실행 시 적용될 환경변수를 설정
+APP_ENV = 환경변수의 이름 (임의로 지정 가능한 이름)
+dev = 그 변수에 담을 값. 여기서는 "development"의 줄임말로 사용. 
+  
+COPY site/ /usr/share/nginx/html/. 
+COPY = Dockerfile 전용 명령어. 빌드 시점에 호스트의 파일/폴더를 이미지 내부로 복사함. 
+site/ = 복사할 원본 경로 (호스트의 site 폴더, 끝의 /는 "폴더 안의 내용물 전부"를 의미). 
+/usr/share/nginx/html/ = 복사될 대상 경로 (컨테이너 내부에서 nginx가 웹페이지 파일을 찾는 표준 위치). 
+  
 **커스텀 포인트 요약**
 - 베이스: `nginx:alpine` (경량 웹서버 이미지)
 - `LABEL`: 이미지 메타데이터(제목) 부여
@@ -334,6 +406,16 @@ $ docker images
 REPOSITORY    TAG       IMAGE ID       CREATED         SIZE
 my-web        1.0       d9f3fde493d6   5 minutes ago   62.4MB
 ```
+<명령어 정리>   
+docker build -t my-web:1.0 .  
+build = docker의 하위 명령어. Dockerfile을 읽어서 실제 이미지를 만들어내는(빌드하는) 명령. 
+-t = tag의 약자. 만들어질 이미지에 이름표를 붙이는 옵션. 
+my-web:1.0 = 붙일 이름표. my-web은 이미지 이름(repository), :1.0은 태그(버전 구분용). 
+. = 빌드 컨텍스트(context) 경로. "지금 있는 이 폴더를 기준으로 Dockerfile을 찾고, 필요한 파일들(예: site 폴더)도 이 폴더 기준으로 찾아라"는 의미
+
+docker images. 
+방금 만든 my-web:1.0이 목록에 잘 생겼는지 확인하는 용도로 재사용. 
+
 
 ### 7-3. 포트 매핑 접속 (2회)
 
@@ -348,8 +430,26 @@ $ docker run -d -p 8081:80 --name my-web-8081 my-web:1.0
 $ curl http://localhost:8081
 (한글 정상 출력 확인)
 ```
-동일한 이미지(`my-web:1.0`)로 서로 다른 포트에 독립된 컨테이너 두 개를 동시에 실행할 수 있음을 확인했다.
+동일한 이미지(`my-web:1.0`)로 서로 다른 포트에 독립된 컨테이너 두 개를 동시에 실행할 수 있음을 확인했다.  
+  
+<명령어 정리>   
+docker run -d -p 8080:80 --name my-web-8080 my-web:1.0. 
+-p = publish, 호스트와 컨테이너 사이의 포트를 연결(매핑)하는 옵션. 
+8080:80 = 호스트포트:컨테이너포트 형식, 콜론(:) 왼쪽(8080)은 내 컴퓨터(맥)에서 사용할 포트, 오른쪽(80)은 컨테이너 내부에서 nginx가 듣고 있는 포트. 
+my-web:1.0 = 실행할 이미지 이름:태그. 
 
+curl http://localhost:8080. 
+curl = Client URL,터미널에서 웹/네트워크 요청을 보내고 응답을 받아오는 프로그램. 
+http:// = 사용할 통신 프로토콜(규약) 지정. 웹페이지를 주고받을 때 쓰는 표준 규약. 
+localhost = "지금 이 컴퓨터 자신"을 가리키는 특별한 호스트 이름 (자기 자신에게 접속한다는 뜻). 
+:8080 = 접속할 포트 번호. 콜론 뒤에 붙여서 지정. 
+
+docker run -d -p 8081:80 --name my-web-8081 my-web:1.0. 
+위와 완전히 동일한 구조. 호스트 포트만 8081로 바꿔서, 같은 이미지로 두 번째 독립된 컨테이너를 실행. 
+  
+curl http://localhost:8081. 
+위와 동일한 방식으로, 이번엔 8081번 포트에 접속해 확인. 
+  
 ---
 
 ## 8) 바인드 마운트 실습 (변경 반영 확인)
@@ -368,6 +468,17 @@ $ curl http://localhost:8082
 # (변경 후 - 재빌드/재시작 없이 즉시 반영됨)
 <h1>수정된 페이지입니다! 바인드 마운트가 잘 동작하네요 🎉</h1>
 ```
+<명령어 정리>   
+docker run -d -p 8082:80 --name my-web-bind -v $(pwd)/site:/usr/share/nginx/html my-web:1.0. 
+-v = volume, 호스트와 컨테이너 사이에 폴더/파일을 연결(마운트)하는 옵션 (바인드 마운트와 볼륨 둘 다 이 옵션으로 지정함). 
+
+$(pwd) = 명령어 치환(command substitution) 문법, 괄호 안의 pwd 명령을 먼저 실행하고, 그 결과값(현재 폴더의 절대 경로)을 그 자리에 그대로 끼워 넣음. 
+$(pwd)/site = 즉 "지금 폴더의 절대경로 + /site" → 호스트에 있는 실제 site 폴더의 전체 경로. 
+: = 왼쪽(호스트 경로)과 오른쪽(컨테이너 경로)을 연결한다는 구분 기호. 
+/usr/share/nginx/html = 컨테이너 내부에서 연결될 대상 경로 (nginx가 웹페이지를 찾는 위치).
+
+curl http://localhost:8082. 
+위에서 설명한 것과 동일한 원리로, 이번엔 8082번 포트(바인드 마운트 컨테이너)에 접속. 
 
 **관찰 정리**: 바인드 마운트로 연결하면 컨테이너를 재시작하거나 이미지를 재빌드하지 않아도, 호스트(맥)에서 파일을 수정하는 즉시 컨테이너 내부에도 변경이 반영된다. 이는 Dockerfile의 `COPY`처럼 이미지 빌드 시점에 파일을 고정하는 방식과 달리, 실시간 개발에 적합하다.
 
@@ -397,7 +508,31 @@ $ docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity
 $ docker exec -it vol-test2 bash -c "cat /data/hello.txt"
 hi
 ```
+<명령어 정리>   
+docker volume create mydata. 
+volume = docker의 하위 명령어 그룹. 볼륨을 관리(생성/조회/삭제)하는 명령어들의 상위 카테고리. 
+create = volume의 하위 명령어. 생성하다라는 뜻. 
+mydata = 생성할 볼륨에 붙일 이름 (임의로 지정 가능).  
+  
+docker run -d --name vol-test -v mydata:/data ubuntu sleep infinity
+-v mydata:/data = -v 옵션에 "호스트 경로" 대신 볼륨 이름(mydata)을 지정. Docker가 관리하는 볼륨을 컨테이너의 /data 경로에 연결하라는 뜻. 
 
+docker exec -it vol-test bash -c "echo hi > /data/hello.txt && cat /data/hello.txt". 
+bash = 실행할 셸 프로그램. 
+-c = command, 뒤에 오는 문자열 전체를 하나의 명령어 뭉치로 bash에게 즉시 실행시키라는 옵션 (대화형으로 들어가지 않고, 딱 그 명령만 실행하고 끝냄). 
+"echo hi > /data/hello.txt && cat /data/hello.txt" = 실제로 실행될 명령어 내용. echo hi > /data/hello.txt(hello.txt에 hi 저장) 실행 후, &&(그리고, 앞 명령이 성공하면 이어서)로 연결된 cat /data/hello.txt(그 파일 내용 확인)를 순서대로 실행. 
+  
+docker rm -f vol-test. 
+rm = 컨테이너를 삭제하는 하위 명령어. 
+-f = force, 컨테이너가 실행 중이어도 강제로 정지시키고 바로 삭제함 (원래는 정지된 컨테이너만 삭제 가능하지만, 이 옵션으로 한 번에 처리). 
+vol-test = 삭제할 대상 컨테이너의 이름. 
+
+docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity.  
+위 vol-test와 동일한 구조. 이름만 vol-test2로 바꿔서, 같은 볼륨(mydata)을 다시 연결한 새 컨테이너 생성  
+  
+docker exec -it vol-test2 bash -c "cat /data/hello.txt".  
+위와 동일한 구조로, 새 컨테이너 안에서 /data/hello.txt의 내용만 확인 (저장은 안 하고 읽기만 함). 
+  
 **관찰 정리**: `vol-test` 컨테이너를 `docker rm -f`로 완전히 삭제한 뒤, 같은 볼륨(`mydata`)을 연결한 새 컨테이너 `vol-test2`를 실행해 확인한 결과, 이전에 저장했던 `hello.txt` 파일과 그 내용(`hi`)이 그대로 남아있었다. 컨테이너는 삭제되어도 볼륨에 저장된 데이터는 독립적으로 유지된다는 것을 확인했다.
 
 ---
@@ -451,8 +586,50 @@ $ git push origin main
    fd7e0f2..be1fcee  main -> main
 ```
 
-VS Code에서 GitHub 계정으로 로그인 후 저장소(`song0423ricky/Codyssey_Mission1`)와 연동을 완료했다.
+VS Code에서 GitHub 계정으로 로그인 후 저장소(`song0423ricky/Codyssey_Mission1`)와 연동을 완료했다.  
+  
+<명령어 정리>    
+git --version. 
+git = Git 프로그램 자체를 실행하는 기본 명령어. 
+--version = 앞서 설명한 것과 동일한 형식의 옵션. 설치된 Git의 버전 정보 출력. 
+  
+git config. 
+config = configuration,Git의 각종 설정값을 조회/변경하는 하위 명령어. 
 
+git config --list. 
+--list = 현재 적용되어 있는 모든 Git 설정 항목을 나열해서 보여줌. 
+ 
+git status. 
+status = 상태를 뜻하는 하위 명령어. 현재 작업 폴더의 변경사항이 Git 입장에서 어떤 상태인지(추적 안 됨/스테이징됨/커밋됨 등) 요약해서 보여줌  
+  
+git add .  
+add = 변경된 파일을 "다음 커밋에 포함할 대상 목록(스테이징 영역)"에 등록함. 
+. = 현재 폴더를 가리키는 기호. 여기서는 "현재 폴더 안의 모든 변경사항"을 한 번에 추가하라는 의미로 사용. 
+  
+git commit -m. 
+commit = 위임하다/맡기다라는 원뜻에서 유래. 스테이징된 변경사항을 하나의 "저장 지점(스냅샷)"으로 로컬 저장소 기록에 남기는 하위 명령어. 
+-m = message,뒤에 오는 문자열을 이 커밋에 대한 설명(커밋 메시지)으로 지정하는 옵션. 이 옵션이 없으면 편집기가 열려서 메시지를 따로 입력해야 함. 
+  
+git push origin main. 
+push = 밀어넣다라는 뜻의 하위 명령어. 로컬 저장소에 쌓인 커밋들을 원격 저장소로 업로드함. 
+origin = 원격 저장소를 가리키는 별칭. Git 저장소를 clone하거나 remote add할 때 관례적으로 붙는 기본 이름 (실제 GitHub URL 대신 이 짧은 이름을 씀). 
+main = 업로드할 대상 브랜치의 이름. 기본 브랜치 이름으로 흔히 쓰이는 이름. 
+  
+git config pull.rebase false. 
+config = 위에서 설명한 설정 관련 하위 명령어. 
+pull.rebase = 설정 항목의 이름. "pull 작업 시 rebase 방식을 쓸지"를 결정하는 항목. 
+false = 그 항목에 지정하는 값. "아니오(사용 안 함)"라는 뜻 → 결과적으로 기본값인 merge 방식이 적용됨. (머지가 뭐지?)
+  
+git pull origin main.  
+pull =  원격 저장소의 최신 커밋을 받아와서 로컬 브랜치와 합치는 작업  
+origin, main = 위와 동일한 의미 (원격 저장소 별칭, 대상 브랜치 이름)  
+
+git commit -m "Merge remote-tracking branch origin/main"  
+위 git commit -m과 동일한 구조. 여기서는 pull 과정에서 자동으로 생성되어야 했던 "병합 커밋"을, 편집기 오류로 인해 수동으로 메시지를 지정해서 완료한 경우  
+  
+git push origin main (2번째)  
+위와 완전히 동일한 명령어. 병합이 끝난 뒤 다시 한번 원격 저장소로 업로드를 시도해 최종적으로 성공시킨 단계  
+  
 ---
 
 ## 11) 트러블슈팅
