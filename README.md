@@ -34,7 +34,7 @@
 
 ```bash
 $ pwd
-/Users/song0423ricky4374/Codessey_Mission1/Codyssey_Mission1/practice
+/Users/song0423ricky4374/Codyssey_Mission1/practice
 # (절대 경로: / 부터 시작하는 완전한 주소)
 
 $ cd ..
