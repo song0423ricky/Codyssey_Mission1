@@ -231,13 +231,13 @@ CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                  
 4367b013568c   hello-world   "/hello"   9 minutes ago   Exited (0) 9 minutes ago             naughty_williamson
 ```
 <명령어 정리>    
-docker images. 
+docker images. (최종결과물:Docker 운영/검증 로그)
 지금까지 로컬 컴퓨터에 다운로드(pull)되어 저장된 이미지 목록을 전부 보여줌. 
   
 docker ps. 
 process status,현재 실행 중인 컨테이너 목록만 보여줌. 
   
-docker ps -a. 
+docker ps -a. (최종결과물:Docker 운영/검증 로그)
 -a = all,실행 중인 것뿐 아니라, 멈춘(Exited) 컨테이너까지 포함한 전체 컨테이너 목록을 보여줌. 
   
 ### 6-2. hello-world 실행
@@ -259,13 +259,17 @@ hello-world = Docker Hub(공용 이미지 저장소)에 있는 실행할 테스�
 
 ```bash
 $ docker run -it --name my-ubuntu-v2 ubuntu bash
-root@f19eafa3998d:/# ls
+
+$ root@f19eafa3998d:/# ls
 bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
-root@f19eafa3998d:/# pwd
+
+$ root@f19eafa3998d:/# pwd
 /
-root@f19eafa3998d:/# echo "hello from container"
+
+$ root@f19eafa3998d:/# echo "hello from container"
 hello from container
-root@f19eafa3998d:/# exit
+
+$ root@f19eafa3998d:/# exit
 ```
 <명령어 정리>    
 docker run -it --name my-ubuntu-v2 ubuntu bash  
@@ -298,11 +302,11 @@ CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O   BLOCK
 (실행 중인 컨테이너가 없어 표시할 내용 없음)
 ```
 <명령어 정리>    
-docker logs my-ubuntu-v2  
+docker logs my-ubuntu-v2  (최종결과물4:Docker 운영/검증 로그)
 logs = 컨테이너가 표준 출력(터미널 화면)에 남긴 기록을 다시 보여주는 하위 명령어  
 my-ubuntu-v2 = 로그를 확인할 대상 컨테이너의 이름,컨테이너가 정지된 상태여도, 살아있을 때 남긴 출력 기록은 그대로 조회 가능함  
 
-docker stats --no-stream
+docker stats --no-stream (최종결과물:Docker 운영/검증 로그)
 stats = statistics, 실행 중인 컨테이너들의 CPU, 메모리, 네트워크, 디스크 사용량을 보여주는 하위 명령어, 옵션 없이 쓰면 실시간으로 계속 갱신되며 화면에 출력됨  
 --no-stream = "스트림(연속 갱신)을 하지 않는다"는 옵션, 현재 시점의 값을 딱 한 번만 출력하고 끝냄    
 
@@ -383,7 +387,7 @@ COPY site/ /usr/share/nginx/html/
 EOF
 ```
 <명령어 정리>    
-cat > site/index.html << 'EOF' ... EOF
+cat > site/index.html << 'EOF' ... EOF (최종결과물5:Dockerfile 기반 웹 서버 컨테이너)
 cat = 위에서 설명한 것과 동일하지만 여기서는 파일을 "읽는" 게 아니라 표준 입력을 그대로 받아서 출력하는 용도로 씀  
 '>' = 리다이렉션기호, 원래는 화면에 나갈 출력을, 화면 대신 지정한 파일로 보내라는 뜻. 파일이 없으면 새로 만들고, 있으면 기존 내용을 덮어씀  
 site/index.html = 출력을 저장할 대상 파일 경로  
@@ -459,7 +463,7 @@ docker images.
 
 ```bash
 # 1차: 8080 포트
-$ docker run -d -p 8080:80 --name my-web-8080 my-web:1.0
+$ docker run -d -p 8080:80 --name my-web-8080 my-web:1.0 (포트 매핑 접속 증거)
 $ curl http://localhost:8080
 (한글 정상 출력 확인)
 
