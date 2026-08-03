@@ -198,9 +198,9 @@ Server:
 
 <개념 정리>
 Doeker : 리눅스 컨테이너를 기반으로 만든 os레벨 가상화 구현을 도와주는 프로그램,VM(가상머신)과 다르게 호스트의 OS커널을 사용하지만 더 가벼움
+이미지 : 소스 코드, 라이브러리, 종속성, 도구 및 응용 프로그램을 실행하는데 필요한 기타 파일을 포함하는 불변(변경 불가) 파일임
 컨테이너: 컨테이너는 이미지를 실행한 인스턴스 (가상컴퓨터), (인스턴스는 이미지를 기반으로 만들려는 객체를 실체화시킨것)
-이미지 : 소스 코드, 라이브러리, 종속성, 도구 및 응용 프로그램을 실행하는데 필요한 기타 파일을 포함하는 불변(변경 불가) 파일이다.
-데몬   : 백그라운드에서 계속 실행되면서 특정 작업을 처리해주는 프로그램
+데몬   : 백그라운드에서 계속 실행되면서 도커 클라이언트와 상호 작용하고 도커 이미지와 컨테이너를 관리,처리해주는 프로그램
 CLI    : Command Line Interface,문자를 입력하여 컴퓨터에 명령을 내리는 인터페이스 방식으로 cmd(명령 프롬포트),terminal등이 CLI임
 
 <명령어 정리>    
@@ -277,7 +277,7 @@ docker run -it --name my-ubuntu-v2 ubuntu bash
 -t = teletypewriter(가상 터미널), 터미널 화면처럼 출력이 표시되도록 함  
 -it = -i와 -t를 합쳐 쓴 것,두 개를 함께 써야 실제로 터미널처럼 상호작용 가능한 컨테이너 접속이 됨  
 --name my-ubuntu-v2 = 컨테이너에 my-ubuntu-v2라는 별칭(이름)을 붙이는 옵션. 안 붙이면 Docker가 랜덤한 이름을 자동 생성함  
-ubuntu = 사용할 이미지 이름 (우분투 리눅스 배포판의 공식 이미지)  
+ubuntu = 사용할 이미지 이름 (우분투 리눅스 배포판의 공식 이미지,os)  
 bash = 컨테이너 안에서 실행할 명령어. bash는 리눅스의 대표적인 셸(shell) 프로그램 이름으로, 이걸 실행하면 컨테이너 내부에서 명령어를 입력할 수 있는 상태가 됨  
 
 ### 6-4. 로그 / 리소스 확인
@@ -334,20 +334,46 @@ root@2ff82e583cde:/# exit
 $ docker ps
 CONTAINER ID   IMAGE     COMMAND            CREATED              STATUS              PORTS     NAMES
 2ff82e583cde   ubuntu    "sleep infinity"   About a minute ago   Up About a minute             keep-alive
+``` 
+**관찰 정리**:   
+`my-ubuntu-v2`에서는 메인 프로세스(bash)를 직접 실행했기 때문에 `exit` 시 컨테이너가 함께 `Exited` 상태가 되었음,  
+반면 `keep-alive`는 메인 프로세스가 `sleep infinity`이고 `exec`는 그 위에 추가로 연 세션이었으므로, 그 세션에서 `exit`해도 메인 프로세스는 살아있어 컨테이너가 계속 `Up` 상태를 유지함.  
+  
+이어서 `docker attach`도 직접 실행    
+  
+```bash
+# 계속 살아있게 실행 (메인 프로세스: sleep infinity)
+$ docker run -d --name attach-test ubuntu sleep infinity
+
+# 메인 프로세스에 직접 접속(attach)
+$ docker attach attach-test
+# sleep infinity는 셸(bash)이 아니라 입력을 받는 프로그램이 아니므로, echo 등을 입력해도 반응이 없음
+
+# Ctrl+P, Ctrl+Q 로 컨테이너를 종료시키지 않고 탈출(detach)
+
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND            CREATED         STATUS         PORTS     NAMES
+f4de98c67920   ubuntu    "sleep infinity"   6 minutes ago   Up 6 minutes             attach-test
+# detach 후에도 attach-test는 계속 Up 상태 유지
 ```
+
+**관찰 정리**: 
+`my-ubuntu-v2`에서는 메인 프로세스(bash)를 직접 실행했기 때문에 `exit` 시 컨테이너가 함께 `Exited` 상태가 됨 
+반면 `keep-alive`는 메인 프로세스가 `sleep infinity`이고 `exec`는 그 위에 추가로 연 세션이었으므로, 그 세션에서 `exit`해도 메인 프로세스는 살아있어 컨테이너가 계속 `Up` 상태를 유지함  
+한편 `attach`는 메인 프로세스 자체에 직접 연결되는 방식이라, 그 프로세스가 `sleep infinity`처럼 입력을 받지 않는 종류이면 아무런 반응이 없었고, 일반적인 `exit`나 `Ctrl+C` 대신 `Ctrl+P`+`Ctrl+Q` 조합을 사용해야 컨테이너를 종료시키지 않고 안전하게 빠져나올 수 있었음  
+이는 `exec`로 연 별도 세션에서 `exit`해도 컨테이너가 유지되는 것과는 다른 방식의 "유지"라는 점에서 대조됨  
+
 <명령어 정리>    
 docker run -d --name keep-alive ubuntu sleep infinity  
--d = detached, 컨테이너를 백그라운드에서 실행시키고, 터미널 제어권은 바로 사용자에게 돌려줌 (터미널이 컨테이너에 붙잡히지 않음)  
+-d = detached, keep-alive 컨테이너를 백그라운드에서 실행시키고, 터미널 제어권은 바로 사용자에게 돌려줌 (터미널이 컨테이너에 붙잡히지 않음)  
 sleep infinity = 컨테이너 안에서 실행할 명령어. sleep = 리눅스의 "일정 시간 동안 아무것도 안 하고 대기하는" 명령어, infinity = 영구히  
-→ 컨테이너가 영원히 살아있게 만드는 용도로 흔히 쓰임
+-> 컨테이너가 영원히 살아있게 만드는 용도로 흔히 쓰임
 
 docker exec -it keep-alive bash
 exec = execute,이미 실행 중인 컨테이너 안에 추가로 새 명령어(세션)를 실행하는 하위 명령어 (run과 달리 새 컨테이너를 만들지 않음)  
 -it = 위와 동일 (상호작용 + 터미널)  
 keep-alive = 대상이 되는, 이미 실행 중인 컨테이너의 이름  
 bash = 그 컨테이너 안에서 실행할 셸 프로그램    
-
-**관찰 정리**: `my-ubuntu-v2`에서는 메인 프로세스(bash)를 직접 실행했기 때문에 `exit` 시 컨테이너가 함께 `Exited` 상태가 되었다. 반면 `keep-alive`는 메인 프로세스가 `sleep infinity`이고 `exec`는 그 위에 추가로 연 세션이었으므로, 그 세션에서 `exit`해도 메인 프로세스는 살아있어 컨테이너가 계속 `Up` 상태를 유지했다.
 
 ---
 
@@ -386,6 +412,8 @@ ENV APP_ENV=dev
 COPY site/ /usr/share/nginx/html/
 EOF
 ```
+*(A) 웹 서버 베이스 이미지 활용(예: NGINX/Apache 등) + 정적 콘텐츠/설정만 교체
+
 <명령어 정리>    
 cat > site/index.html << 'EOF' ... EOF (최종결과물5:Dockerfile 기반 웹 서버 컨테이너)
 cat = 위에서 설명한 것과 동일하지만 여기서는 파일을 "읽는" 게 아니라 표준 입력을 그대로 받아서 출력하는 용도로 씀  
@@ -448,6 +476,9 @@ $ docker images
 REPOSITORY    TAG       IMAGE ID       CREATED         SIZE
 my-web        1.0       d9f3fde493d6   5 minutes ago   62.4MB
 ```
+<과제목표3>  
+"기존 Dockerfile을 기반으로 “커스텀 이미지”를 만들 수 있다" 완료  
+
 <명령어 정리>   
 docker build -t my-web:1.0 .  
 build = docker의 하위 명령어. Dockerfile을 읽어서 실제 이미지를 만들어내는(빌드하는) 명령. 
@@ -473,7 +504,11 @@ $ curl http://localhost:8081
 (한글 정상 출력 확인)
 ```
 동일한 이미지(`my-web:1.0`)로 서로 다른 포트에 독립된 컨테이너 두 개를 동시에 실행할 수 있음을 확인했다.  
-  
+
+<과제목표3>  
+"기존 Dockerfile을 기반으로 “커스텀 이미지”를 만들 수 있다" 완료  
+
+
 <명령어 정리>   
 docker run -d -p 8080:80 --name my-web-8080 my-web:1.0. 
 -p = publish, 호스트와 컨테이너 사이의 포트를 연결(매핑)하는 옵션. 
