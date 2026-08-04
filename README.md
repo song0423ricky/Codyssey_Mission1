@@ -643,9 +643,14 @@ branch.main.merge=refs/heads/main
 
 # 작업 폴더 상태 확인
 $ git status
+현재 브랜치 main
+브랜치가 'origin/main'에 맞게 업데이트된 상태입니다.
 추적하지 않는 파일:
+  (커밋할 사항에 포함하려면 "git add <파일>..."을 사용하십시오)
         practice/
         webserver/
+커밋할 사항을 추가하지 않았지만 추적하지 않는 파일이 있습니다 (추적하려면 "git
+add"를 사용하십시오)
 
 # 변경사항 추가 및 커밋
 $ git add .
