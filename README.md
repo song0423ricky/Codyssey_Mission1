@@ -592,31 +592,33 @@ hi
 볼륨은 컨테이너의 생성·삭제와 완전히 독립된, Docker가 별도로 관리하는 저장 공간으로, 컨테이너가 삭제되어도 그 안에 저장했던 데이터가 사라지지 않고 계속 보존(영속)되게 해준다.  
 
 <명령어 정리>   
-docker volume create mydata. 
-volume = docker의 하위 명령어 그룹. 볼륨을 관리(생성/조회/삭제)하는 명령어들의 상위 카테고리. 
-create = volume의 하위 명령어. 생성하다라는 뜻. 
-mydata = 생성할 볼륨에 붙일 이름 (임의로 지정 가능).  
+docker volume create mydata.    
+volume = docker의 하위 명령어 그룹. 볼륨을 관리(생성/조회/삭제)하는 명령어들의 상위 카테고리.   
+create = volume의 하위 명령어. 생성하다라는 뜻.     
+mydata = 생성할 볼륨에 붙일 이름 (임의로 지정 가능).     
+    
+docker run -d --name vol-test -v mydata:/data ubuntu sleep infinity  
+-v mydata:/data = -v 옵션에 "호스트 경로" 대신 볼륨 이름(mydata)을 지정. Docker가 관리하는 볼륨을 컨테이너의 /data 경로에 연결하라는 뜻.   
   
-docker run -d --name vol-test -v mydata:/data ubuntu sleep infinity
--v mydata:/data = -v 옵션에 "호스트 경로" 대신 볼륨 이름(mydata)을 지정. Docker가 관리하는 볼륨을 컨테이너의 /data 경로에 연결하라는 뜻. 
-
-docker exec -it vol-test bash -c "echo hi > /data/hello.txt && cat /data/hello.txt". 
-bash = 실행할 셸 프로그램. 
--c = command, 뒤에 오는 문자열 전체를 하나의 명령어 뭉치로 bash에게 즉시 실행시키라는 옵션 (대화형으로 들어가지 않고, 딱 그 명령만 실행하고 끝냄). 
-"echo hi > /data/hello.txt && cat /data/hello.txt" = 실제로 실행될 명령어 내용. echo hi > /data/hello.txt(hello.txt에 hi 저장) 실행 후, &&(그리고, 앞 명령이 성공하면 이어서)로 연결된 cat /data/hello.txt(그 파일 내용 확인)를 순서대로 실행. 
+docker exec -it vol-test bash -c "echo hi > /data/hello.txt && cat /data/hello.txt".   
+bash = 실행할 셸 프로그램.   
+-c = command, 뒤에 오는 문자열 전체를 하나의 명령어 뭉치로 bash에게 즉시 실행시키라는 옵션 (대화형으로 들어가지 않고, 딱 그 명령만 실행하고 끝냄).   
+"echo hi > /data/hello.txt && cat /data/hello.txt" = 실제로 실행될 명령어 내용. 
+echo hi > /data/hello.txt(hello.txt에 hi 저장) 실행 후, &&(그리고, 앞 명령이 성공하면 이어서)로 연결된 cat /data/hello.txt(그 파일 내용 확인)를 순서대로 실행.   
+   
+docker rm -f vol-test.   
+rm = 컨테이너를 삭제하는 하위 명령어.   
+-f = force, 컨테이너가 실행 중이어도 강제로 정지시키고 바로 삭제함 (원래는 정지된 컨테이너만 삭제 가능하지만, 이 옵션으로 한 번에 처리).   
+vol-test = 삭제할 대상 컨테이너의 이름.   
   
-docker rm -f vol-test. 
-rm = 컨테이너를 삭제하는 하위 명령어. 
--f = force, 컨테이너가 실행 중이어도 강제로 정지시키고 바로 삭제함 (원래는 정지된 컨테이너만 삭제 가능하지만, 이 옵션으로 한 번에 처리). 
-vol-test = 삭제할 대상 컨테이너의 이름. 
-
-docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity.  
-위 vol-test와 동일한 구조. 이름만 vol-test2로 바꿔서, 같은 볼륨(mydata)을 다시 연결한 새 컨테이너 생성  
+docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity.    
+위 vol-test와 동일한 구조. 이름만 vol-test2로 바꿔서, 같은 볼륨(mydata)을 다시 연결한 새 컨테이너 생성    
   
-docker exec -it vol-test2 bash -c "cat /data/hello.txt".  
-위와 동일한 구조로, 새 컨테이너 안에서 /data/hello.txt의 내용만 확인 (저장은 안 하고 읽기만 함). 
+docker exec -it vol-test2 bash -c "cat /data/hello.txt".    
+위와 동일한 구조로, 새 컨테이너 안에서 /data/hello.txt의 내용만 확인 (저장은 안 하고 읽기만 함).   
+    
   
-**관찰 정리**: `vol-test` 컨테이너를 `docker rm -f`로 완전히 삭제한 뒤, 같은 볼륨(`mydata`)을 연결한 새 컨테이너 `vol-test2`를 실행해 확인한 결과, 이전에 저장했던 `hello.txt` 파일과 그 내용(`hi`)이 그대로 남아있었다. 컨테이너는 삭제되어도 볼륨에 저장된 데이터는 독립적으로 유지된다는 것을 확인했다.
+`vol-test` 컨테이너를 `docker rm -f`로 완전히 삭제한 뒤, 같은 볼륨(`mydata`)을 연결한 새 컨테이너 `vol-test2`를 실행해 확인한 결과, 이전에 저장했던 `hello.txt` 파일과 그 내용(`hi`)이 그대로 남아있었다. 컨테이너는 삭제되어도 볼륨에 저장된 데이터는 독립적으로 유지된다는 것을 확인함  
 
 ---
 
