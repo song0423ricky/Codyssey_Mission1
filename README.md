@@ -543,8 +543,8 @@ $ curl http://localhost:8082
 docker run -d -p 8082:80 --name my-web-bind -v $(pwd)/site:/usr/share/nginx/html my-web:1.0. 
 -v = volume, 호스트와 컨테이너 사이에 폴더/파일을 연결(마운트)하는 옵션 (바인드 마운트와 볼륨 둘 다 이 옵션으로 지정함). 
 
-$(pwd) = 명령어 치환(command substitution) 문법, 괄호 안의 pwd 명령을 먼저 실행하고, 그 결과값(현재 폴더의 절대 경로)을 그 자리에 그대로 끼워 넣음. 
-$(pwd)/site = 즉 "지금 폴더의 절대경로 + /site" → 호스트에 있는 실제 site 폴더의 전체 경로. 
+'$(pwd)' = 명령어 치환(command substitution) 문법, 괄호 안의 pwd 명령을 먼저 실행하고, 그 결과값(현재 폴더의 절대 경로)을 그 자리에 그대로 끼워 넣음. 
+'$(pwd)/site' = 즉 "지금 폴더의 절대경로 + /site" → 호스트에 있는 실제 site 폴더의 전체 경로. 
 : = 왼쪽(호스트 경로)과 오른쪽(컨테이너 경로)을 연결한다는 구분 기호. 
 /usr/share/nginx/html = 컨테이너 내부에서 연결될 대상 경로 (nginx가 웹페이지를 찾는 위치).
 
