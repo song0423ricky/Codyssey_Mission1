@@ -233,8 +233,8 @@ CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                  
 4367b013568c   hello-world   "/hello"   9 minutes ago   Exited (0) 9 minutes ago             naughty_williamson
 ```
 <명령어 정리>    
-docker images. (최종결과물:Docker 운영/검증 로그). 
-지금까지 로컬 컴퓨터에 다운로드(pull)되어 저장된 이미지 목록을 전부 보여줌. 
+docker images. (최종결과물:Docker 운영/검증 로그).  
+지금까지 로컬 컴퓨터에 다운로드(pull)되어 저장된 이미지 목록을 전부 보여줌.  
   
 docker ps.   
 process status,현재 실행 중인 컨테이너 목록만 보여줌. 
