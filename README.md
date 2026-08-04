@@ -303,9 +303,9 @@ $ docker stats --no-stream
 CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT   MEM %     NET I/O   BLOCK I/O   PIDS
 (실행 중인 컨테이너가 없어 표시할 내용 없음)
 ```
-<명령어 정리>    
-docker logs my-ubuntu-v2  (최종결과물4:Docker 운영/검증 로그). 
-logs = 컨테이너가 표준 출력(터미널 화면)에 남긴 기록을 다시 보여주는 하위 명령어.   
+<명령어 정리>.     
+docker logs my-ubuntu-v2  (최종결과물4:Docker 운영/검증 로그).   
+logs = 컨테이너가 표준 출력(터미널 화면)에 남긴 기록을 다시 보여주는 하위 명령어.     
 my-ubuntu-v2 = 로그를 확인할 대상 컨테이너의 이름,컨테이너가 정지된 상태여도, 살아있을 때 남긴 출력 기록은 그대로 조회 가능함.   
   
 docker stats --no-stream (최종결과물:Docker 운영/검증 로그). 
