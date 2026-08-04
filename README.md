@@ -421,7 +421,7 @@ site/index.html = 출력을 저장할 대상 파일 경로
    
 ['html' 정리]  
     
-<!DOCTYPE html>   
+[ <!DOCTYPE html> ]
 HTML 문서의 종류(버전)를 브라우저에게 알려주는 선언. "이 문서는 HTML5 표준을 따른다"는 의미. 
   
 [ <meta charset="UTF-8"> ]
