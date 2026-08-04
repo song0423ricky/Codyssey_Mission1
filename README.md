@@ -269,7 +269,7 @@ $ root@f19eafa3998d:/# pwd
 $ root@f19eafa3998d:/# echo "hello from container"
 hello from container
 
-$ root@f19eafa3998d:/# exit - *****my-ubuntu-v2 exit 함
+$ root@f19eafa3998d:/# exit - ***** my-ubuntu-v2 exit 함
 ```
 <명령어 정리>    
 docker run -it --name my-ubuntu-v2 ubuntu bash  
