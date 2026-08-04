@@ -540,7 +540,7 @@ $ curl http://localhost:8082
 <h1>수정된 페이지입니다! 바인드 마운트가 잘 동작하네요 🎉</h1>
 ```
 <명령어 정리>   
-docker run -d -p 8082:80 --name my-web-bind -v $(pwd)/site:/usr/share/nginx/html my-web:1.0. 
+docker run -d -p 8082:80 --name my-web-bind -v $(pwd)/site:/usr/share/nginx/html my-web:1.0.    
 -v = volume, 호스트와 컨테이너 사이에 폴더/파일을 연결(마운트)하는 옵션 (바인드 마운트와 볼륨 둘 다 이 옵션으로 지정함). 
 
 '$(pwd)' = 명령어 치환(command substitution) 문법, 괄호 안의 pwd 명령을 먼저 실행하고, 그 결과값(현재 폴더의 절대 경로)을 그 자리에 그대로 끼워 넣음. 
