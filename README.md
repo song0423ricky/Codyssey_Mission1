@@ -204,10 +204,12 @@ Doeker : 리눅스 컨테이너를 기반으로 만든 os레벨 가상화 구현
 CLI    : Command Line Interface,문자를 입력하여 컴퓨터에 명령을 내리는 인터페이스 방식으로 cmd(명령 프롬포트),terminal등이 CLI임  
   
 <명령어 정리>    
-$ docker --version,$ docker info
-docker '명령어' = Docker CLI를 실행하는 기본 명령어  
---version = 두 개의 하이픈(--)으로 시작하는 long option 형식, 지금 설치된 Docker CLI의 버전 정보를 출력하라는 옵션  
-info = information, 현재 연결된 Docker 엔진(OrbStack)의 전반적인 상태 정보(컨텍스트, 컨테이너/이미지 개수, OS 종류 등)를 자세히 출력함  
+$ docker --version
+docker '명령어' = Docker CLI를 실행하는 기본 명령어.   
+--version = 두 개의 하이픈(--)으로 시작하는 long option 형식, 지금 설치된 Docker CLI의 버전 정보를 출력하라는 옵션   
+  
+$ docker info.   
+info = information, 현재 연결된 Docker 엔진(OrbStack)의 전반적인 상태 정보(컨텍스트, 컨테이너/이미지 개수, OS 종류 등)를 자세히 출력함   
 
 ---
 
