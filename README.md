@@ -586,6 +586,11 @@ $ docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity
 $ docker exec -it vol-test2 bash -c "cat /data/hello.txt"
 hi
 ```
+
+<과제목표5 - Docker 볼륨>
+컨테이너 안에서 만든 데이터들은 컨테이너가 삭제되면 같이 삭제된다.  
+볼륨은 컨테이너의 생성·삭제와 완전히 독립된, Docker가 별도로 관리하는 저장 공간으로, 컨테이너가 삭제되어도 그 안에 저장했던 데이터가 사라지지 않고 계속 보존(영속)되게 해준다.  
+
 <명령어 정리>   
 docker volume create mydata. 
 volume = docker의 하위 명령어 그룹. 볼륨을 관리(생성/조회/삭제)하는 명령어들의 상위 카테고리. 
@@ -665,7 +670,12 @@ $ git push origin main
 ```
 
 VS Code에서 GitHub 계정으로 로그인 후 저장소(`song0423ricky/Codyssey_Mission1`)와 연동을 완료했다.  
-  
+
+<과제목표6 - Git과 Github의 차이>    
+Git은 분산형 버전 관리 시스템으로 내 컴퓨터(로컬) 안에서 혼자 파일 변경(버전관리) 이력을 관리하는 로컬 도구임  
+GitHub은 그 Git 기록을 인터넷 서버에 올려 다른 사람과 공유하고 함께 협업할 수 있게 해주는 별도의 온라인 플랫폼임(원격협업 플랫폼)  
+
+
 <명령어 정리>    
 git --version. 
 git = Git 프로그램 자체를 실행하는 기본 명령어. 
