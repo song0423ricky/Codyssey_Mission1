@@ -426,37 +426,39 @@ HTML 문서의 종류(버전)를 브라우저에게 알려주는 선언. "이 �
   
 ```` <meta charset="UTF-8"> ] ````
 meta = 문서 자체에 대한 부가 정보(메타데이터)를 담는 태그. 
-charset = character set(문자 집합)의 약자. 이 문서가 어떤 방식으로 글자를 인코딩했는지 지정. 
-UTF-8 = 한글을 포함한 전 세계 문자를 표현할 수 있는 표준 인코딩 방식 이름. 이걸 명시해야 브라우저가 한글을 올바르게 해석함. 
+charset = character set(문자 집합)의 약자. 이 문서가 어떤 방식으로 글자를 인코딩했는지 지정.   
+UTF-8 = 한글을 포함한 전 세계 문자를 표현할 수 있는 표준 인코딩 방식 이름. 이걸 명시해야 브라우저가 한글을 올바르게 해석함.   
   
-cat > Dockerfile << 'EOF' ... EOF. 
-위 index.html과 완전히 동일한 원리로, 이번엔 Dockerfile이라는 이름의 파일에 내용을 저장함. 
+cat > Dockerfile << 'EOF' ... EOF.    
+위 index.html과 완전히 동일한 원리로, 이번엔 Dockerfile이라는 이름의 파일에 내용을 저장함.   
+    
+FROM nginx:alpine.   
+FROM = Dockerfile 전용 명령어,이 이미지를 만들 때 기반으로 삼을 베이스 이미지를 지정.   
+nginx = 사용할 이미지 이름 (웹서버 소프트웨어 nginx의 공식 이미지).   
+:alpine = 태그(tag). 콜론(:) 뒤에 붙어 이미지의 특정 버전/종류를 지정. alpine은 매우 가벼운 리눅스 배포판을 기반으로 만든 버전이라는 뜻.   
   
-FROM nginx:alpine. 
-FROM = Dockerfile 전용 명령어,이 이미지를 만들 때 기반으로 삼을 베이스 이미지를 지정. 
-nginx = 사용할 이미지 이름 (웹서버 소프트웨어 nginx의 공식 이미지). 
-:alpine = 태그(tag). 콜론(:) 뒤에 붙어 이미지의 특정 버전/종류를 지정. alpine은 매우 가벼운 리눅스 배포판을 기반으로 만든 버전이라는 뜻. 
+LABEL org.opencontainers.image.title="my-custom-nginx".   
+LABEL = Dockerfile 전용 명령어. 이미지에 이름-값 형태의 메타데이터(꼬리표)를 추가함.   
+org.opencontainers.image.title = 라벨의 키(key) 이름. OCI(Open Container Initiative)라는 표준 단체가 정한 "이미지 제목"을 나타내는 규칙적인 키 이름.   
+"my-custom-nginx" = 그 키에 대응하는 값. 여기서는 이미지의 제목으로 지정한 문자열.   
   
-LABEL org.opencontainers.image.title="my-custom-nginx". 
-LABEL = Dockerfile 전용 명령어. 이미지에 이름-값 형태의 메타데이터(꼬리표)를 추가함. 
-org.opencontainers.image.title = 라벨의 키(key) 이름. OCI(Open Container Initiative)라는 표준 단체가 정한 "이미지 제목"을 나타내는 규칙적인 키 이름. 
-"my-custom-nginx" = 그 키에 대응하는 값. 여기서는 이미지의 제목으로 지정한 문자열. 
+ENV APP_ENV=dev. 
+ENV = environment,Dockerfile 전용 명령어,컨테이너 실행 시 적용될 환경변수를 설정. 
+APP_ENV = 환경변수의 이름 (임의로 지정 가능한 이름). 
+dev = 그 변수에 담을 값. 여기서는 "development"의 줄임말로 사용.   
   
-ENV APP_ENV=dev
-ENV = environment,Dockerfile 전용 명령어,컨테이너 실행 시 적용될 환경변수를 설정
-APP_ENV = 환경변수의 이름 (임의로 지정 가능한 이름)
-dev = 그 변수에 담을 값. 여기서는 "development"의 줄임말로 사용. 
+COPY site/ /usr/share/nginx/html/.   
+COPY = Dockerfile 전용 명령어. 빌드 시점에 호스트의 파일/폴더를 이미지 내부로 복사함.   
+site/ = 복사할 원본 경로 (호스트의 site 폴더, 끝의 /는 "폴더 안의 내용물 전부"를 의미).   
+/usr/share/nginx/html/ = 복사될 대상 경로 (컨테이너 내부에서 nginx가 웹페이지 파일을 찾는 표준 위치).   
   
-COPY site/ /usr/share/nginx/html/. 
-COPY = Dockerfile 전용 명령어. 빌드 시점에 호스트의 파일/폴더를 이미지 내부로 복사함. 
-site/ = 복사할 원본 경로 (호스트의 site 폴더, 끝의 /는 "폴더 안의 내용물 전부"를 의미). 
-/usr/share/nginx/html/ = 복사될 대상 경로 (컨테이너 내부에서 nginx가 웹페이지 파일을 찾는 표준 위치). 
-  
-**커스텀 포인트 요약**
+<적용한 베이스>  
 - 베이스: `nginx:alpine` (경량 웹서버 이미지)
-- `LABEL`: 이미지 메타데이터(제목) 부여
-- `ENV APP_ENV=dev`: 개발 환경 구분용 환경변수
-- `COPY site/ ...`: 직접 작성한 정적 페이지로 nginx 기본 페이지 교체
+
+<적용한 커스텀 포인으 각각의 목적>   
+- `LABEL`: 이미지 메타데이터(제목) 부여  
+- `ENV APP_ENV=dev`: 개발 환경 구분용 환경변수  
+- `COPY site/ ...`: 직접 작성한 정적 페이지로 nginx 기본 페이지 교체  
 
 ### 7-2. 빌드
 
