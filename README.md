@@ -421,10 +421,10 @@ site/index.html = 출력을 저장할 대상 파일 경로
    
 ['html' 정리]  
     
-' <!DOCTYPE html> '
+''' <!DOCTYPE html> '''
 HTML 문서의 종류(버전)를 브라우저에게 알려주는 선언. "이 문서는 HTML5 표준을 따른다"는 의미. 
   
-[ <meta charset="UTF-8"> ]
+''' <meta charset="UTF-8"> ] '''
 meta = 문서 자체에 대한 부가 정보(메타데이터)를 담는 태그. 
 charset = character set(문자 집합)의 약자. 이 문서가 어떤 방식으로 글자를 인코딩했는지 지정. 
 UTF-8 = 한글을 포함한 전 세계 문자를 표현할 수 있는 표준 인코딩 방식 이름. 이걸 명시해야 브라우저가 한글을 올바르게 해석함. 
