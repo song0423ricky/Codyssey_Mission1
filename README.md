@@ -411,6 +411,16 @@ EOF
 ```
 *(A) 웹 서버 베이스 이미지 활용(예: NGINX/Apache 등) + 정적 콘텐츠/설정만 교체
 
+<개념 정리>  
+nginx  
+웹 서버 / 리버스 프록시 / 로드 밸런서로 널리 쓰이는 오픈소스 소프트웨어  
+정적 파일 서빙, API 요청 프록시, 여러 서버 앞단에서 트래픽 분산 등에 사용됨  
+
+alpine  
+Docker 이미지의 "태그(tag)"로, 베이스 OS가 Alpine Linux라는 뜻  
+Alpine Linux는 용량이 매우 작은 경량 리눅스 배포판 (약 5MB 수준)  
+일반 nginx:latest (Debian/Ubuntu 기반, 100MB+)에 비해 이미지 크기가 훨씬 작음 (nginx:alpine은 보통 40MB 이하)  
+
 <명령어 정리>    
 cat > site/index.html << 'EOF' ... EOF (최종결과물5:Dockerfile 기반 웹 서버 컨테이너)
 cat = 위에서 설명한 것과 동일하지만 여기서는 파일을 "읽는" 게 아니라 표준 입력을 그대로 받아서 출력하는 용도로 씀  
