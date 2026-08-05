@@ -2,7 +2,8 @@
 
 ## 1) 프로젝트 개요
 
-서울캠퍼스 개발 워크스테이션 구축 미션으로, 터미널(리눅스 CLI), Docker(OrbStack), Git/GitHub을 직접 손으로 다뤄보며 재현 가능한 개발 환경을 세팅하는 것을 목표로 한다. 터미널 기초 조작과 파일 권한 실습 → Docker 설치 및 컨테이너 운영 → 커스텀 Dockerfile로 웹서버 컨테이너화 → 포트 매핑/바인드 마운트/볼륨 실습 → Git/GitHub 연동 순으로 진행했다.
+워크스테이션 구축 미션으로, 터미널(리눅스 CLI), Docker(OrbStack), Git/GitHub을 직접 손으로 다뤄보며 재현 가능한 개발 환경을 세팅하는 것을 목표로 함  
+터미널 기초 조작과 파일 권한 실습 → Docker 설치 및 컨테이너 운영 → 커스텀 Dockerfile로 웹서버 컨테이너화 → 포트 매핑/바인드 마운트/볼륨 실습 → Git/GitHub 연동 순으로 진행했음
 
 ## 2) 실행 환경
 
@@ -14,17 +15,17 @@
 
 ## 3) 수행 체크리스트
 
-- [x] 터미널 기본 조작 및 폴더 구성 (절대/상대 경로, 생성/복사/이동/삭제)
-- [x] 파일/디렉토리 권한 변경 실습 (644 → 755, 755 → 700)
-- [x] Docker 설치/점검 (`docker --version`, `docker info`)
-- [x] hello-world 실행
-- [x] ubuntu 컨테이너 진입 실습
-- [x] 컨테이너 종료(exit) vs 유지(exec) 차이 관찰
-- [x] 커스텀 Dockerfile 빌드/실행 (nginx:alpine 베이스)
-- [x] 포트 매핑 접속 (2회: 8080, 8081)
-- [x] 바인드 마운트 반영 확인
-- [x] Docker 볼륨 영속성 검증
-- [x] Git 설정 + GitHub 연동 (add/commit/pull/push)
+- [o] 터미널 기본 조작 및 폴더 구성 (절대/상대 경로, 생성/복사/이동/삭제)
+- [o] 파일/디렉토리 권한 변경 실습 (644 → 755, 755 → 700)
+- [o] Docker 설치/점검 (`docker --version`, `docker info`)
+- [o] hello-world 실행
+- [o] ubuntu 컨테이너 진입 실습
+- [o] 컨테이너 종료(exit) vs 유지(exec) 차이 관찰
+- [o] 커스텀 Dockerfile 빌드/실행 (nginx:alpine 베이스)
+- [o] 포트 매핑 접속 (2회: 8080, 8081)
+- [o] 바인드 마운트 반영 확인
+- [o] Docker 볼륨 영속성 검증
+- [o] Git 설정 + GitHub 연동 (add/commit/pull/push)
 
 ---
 
