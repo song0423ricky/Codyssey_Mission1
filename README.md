@@ -338,33 +338,53 @@ CONTAINER ID   IMAGE     COMMAND            CREATED              STATUS         
 이어서 `docker attach`도 직접 실행    
   
 ```bash
-# 계속 살아있게 실행 (메인 프로세스: sleep infinity)
-$ docker run -d --name attach-test ubuntu sleep infinity
+# 백그라운드로 실행하되, bash가 메인 프로세스로 대기하도록 -dit 옵션 사용
+$ docker run -dit --name attach-bash-test ubuntu bash
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+Status: Downloaded newer image for ubuntu:latest
+1585ac682f1ce4e2859a74d2b230246593d3de6fa913ed523266851cf2ffc687
 
-# 메인 프로세스에 직접 접속(attach)
-$ docker attach attach-test
-# sleep infinity는 셸(bash)이 아니라 입력을 받는 프로그램이 아니므로, echo 등을 입력해도 반응이 없음
+# 메인 프로세스(bash)에 직접 접속
+$ docker attach attach-bash-test
+root@1585ac682f1c:/# echo "attach with bash test"
+attach with bash test
+root@1585ac682f1c:/# exit
+exit
 
-# Ctrl+P, Ctrl+Q 로 컨테이너를 종료시키지 않고 탈출(detach)
-
-$ docker ps
-CONTAINER ID   IMAGE     COMMAND            CREATED         STATUS         PORTS     NAMES
-f4de98c67920   ubuntu    "sleep infinity"   6 minutes ago   Up 6 minutes             attach-test
-# detach 후에도 attach-test는 계속 Up 상태 유지
+# 컨테이너 상태 확인
+$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED          STATUS                      PORTS     NAMES
+1585ac682f1c   ubuntu    "bash"    48 seconds ago   Exited (0) 11 seconds ago             attach-bash-test
 ```
    
 <개념정리>  
 my-ubuntu-v2에서는 메인 프로세스(bash)를 직접 실행했기 때문에 exit 시 컨테이너가 함께 Exited 상태가 됨  
 반면 keep-alive는 메인 프로세스가 sleep infinity이고 exec는 그 위에 추가로 연 세션이었으므로, 그 세션에서 exit해도 메인 프로세스는 살아있어 컨테이너가 계속 `Up` 상태를 유지함   
-attach는 메인 프로세스 자체에 직접 연결되는 방식이라, 그 프로세스가 sleep infinity처럼 입력을 받지 않는 종류이면 아무런 반응이 없었고,  
-일반적인 exit나 Ctrl+C 대신 Ctrl+P + Ctrl+Q 조합을 사용해야 컨테이너를 종료시키지 않고 안전하게 빠져나올 수 있었음   
+attach는 메인 프로세스 자체에 직접 연결되는 방식이라, 그 프로세스가 sleep infinity처럼 입력을 받지 않는 종류이면 아무런 반응이 없고,    
+메인 프로세스가 bash일떄 (`attach-bash-test`)에서는 `attach`로 접속하자 정상적인 대화형 셸로 동작해 `echo` 명령에 즉시 응답했고, `exit`를 입력하자   
+그 bash 프로세스(=메인 프로세스)가 실제로 종료되면서 컨테이너 전체가 `Exited (0)` 상태로 정지되었다.   
 이는 exec로 연 별도 세션에서 exit해도 컨테이너가 유지되는 것과는 다른 방식의 유지라는 점에서 대조됨   
 
 <명령어 정리>    
 docker run -d --name keep-alive ubuntu sleep infinity  
 -d = detached, keep-alive 컨테이너를 백그라운드에서 실행시키고, 터미널 제어권은 바로 사용자에게 돌려줌 (터미널이 컨테이너에 붙잡히지 않음)  
 sleep infinity = 컨테이너 안에서 실행할 명령어. sleep = 리눅스의 "일정 시간 동안 아무것도 안 하고 대기하는" 명령어, infinity = 영구히  
--> 컨테이너가 영원히 살아있게 만드는 용도로 흔히 쓰임
+-> 컨테이너가 영원히 살아있게 만드는 용도로 흔히 쓰임  
+  
+docker run -dit --name attach-bash-test ubuntu bash. 
+-d = detached	백그라운드에서 실행. 터미널이 컨테이너에 붙잡히지 않고 바로 명령 프롬프트로 돌아옴. 
+-i = interactive	표준 입력(키보드 입력)을 열어둠. 나중에 이 컨테이너에 뭔가 입력할 수 있게 준비해둠. 
+-t = tty (가상 터미널)	터미널 화면처럼 동작하도록 준비함 (프롬프트, 커서 등이 정상적으로 보이게). 
+
+--name attach-bash-test. 
+이 컨테이너에 attach-bash-test라는 이름을 붙이는 옵션 (앞서 여러 번 설명드린 것과 동일). 
+
+docker attach attach-bash-test
+attach = 앞서 설명드린 것과 동일한 하위 명령어. 이미 실행 중인 컨테이너의 메인 프로세스에 터미널을 연결
+attach-bash-test = 접속할 대상 컨테이너의 이름
+
+이번엔 대상 프로세스가 bash였기 때문에, 접속하자마자 root@1585ac682f1c:/#라는 진짜 프롬프트가 뜨고, 정상적으로 명령어에 반응했어요. (지난번 sleep infinity였을 때와 달리요.)
 
 docker exec -it keep-alive bash
 exec = execute,이미 실행 중인 컨테이너 안에 추가로 새 명령어(세션)를 실행하는 하위 명령어 (run과 달리 새 컨테이너를 만들지 않음)  
