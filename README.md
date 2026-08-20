@@ -313,7 +313,7 @@ docker stats --no-stream (최종결과물:Docker 운영/검증 로그).
 stats = statistics, 실행 중인 컨테이너들의 CPU, 메모리, 네트워크, 디스크 사용량을 보여주는 하위 명령어, 옵션 없이 쓰면 실시간으로 계속 갱신되며 화면에 출력됨.     
 --no-stream = "스트림(연속 갱신)을 하지 않는다"는 옵션, 현재 시점의 값을 딱 한 번만 출력하고 끝냄.       
   
-### 6-5. 종료(exit) vs 유지(exec) 차이 관찰
+### 6-5. exec vs attach 차이 관찰
 
 ```bash
 # 백그라운드로 계속 살아있게 실행 (메인 프로세스: sleep infinity)
