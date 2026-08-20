@@ -692,37 +692,20 @@ branch.main.merge=refs/heads/main
 
 # 작업 폴더 상태 확인
 $ git status
-현재 브랜치 main
-브랜치가 'origin/main'에 맞게 업데이트된 상태입니다.
-추적하지 않는 파일:
-  (커밋할 사항에 포함하려면 "git add <파일>..."을 사용하십시오)
-        practice/
-        webserver/
-커밋할 사항을 추가하지 않았지만 추적하지 않는 파일이 있습니다 (추적하려면 "git
-add"를 사용하십시오)
+On branch main
+Your branch is up to date with 'origin/main'.
+nothing to commit, working tree clean
+
+$ git remote -v
+origin  https://github.com/song0423ricky/Codyssey_Mission1.git (fetch)
+origin  https://github.com/song0423ricky/Codyssey_Mission1.git (push)
+#`main` 브랜치가 GitHub 원격 저장소(`origin`)와 정상적으로 연동되어 있으며, 로컬과 원격 간 변경 사항 없이 최신 상태임을 확인했습니다.
 
 # 변경사항 추가 및 커밋
-$ git add .
-$ git commit -m "터미널 실습 및 커스텀 nginx Dockerfile 추가"
-[main db99cc9] 터미널 실습 및 커스텀 nginx Dockerfile 추가
- 3 files changed, 19 insertions(+)
-
-# GitHub에 업로드 시도 → 원격에 로컬에 없는 커밋이 있어 거부됨
-$ git push origin main
- ! [rejected]        main -> main (fetch first)
-
-# 병합 방식 지정 후 원격 변경사항 받아오기
-$ git config pull.rebase false
-$ git pull origin main
-error: there was a problem with the editor 'vi'
-
-# 편집기 오류로 자동 커밋이 안 되어 수동으로 병합 커밋 완료
-$ git commit -m "Merge remote-tracking branch origin/main"
-[main be1fcee] Merge remote-tracking branch origin/main
-
-# 다시 업로드 → 성공
-$ git push origin main
-   fd7e0f2..be1fcee  main -> main
+$ git log --oneline
+39161b6 (HEAD -> main, origin/main, origin/HEAD) Update README.md
+6c44a6d Update README.md
+b6ecaab Update README.md
 ```
 
 VS Code에서 GitHub 계정으로 로그인 후 저장소(`song0423ricky/Codyssey_Mission1`)와 연동을 완료했다.  
