@@ -360,11 +360,12 @@ CONTAINER ID   IMAGE     COMMAND   CREATED          STATUS                      
    
 <개념정리>  
 my-ubuntu-v2에서는 메인 프로세스(bash)를 직접 실행했기 때문에 exit 시 컨테이너가 함께 Exited 상태가 됨  
-반면 keep-alive는 메인 프로세스가 sleep infinity이고 exec는 그 위에 추가로 연 세션이었으므로, 그 세션에서 exit해도 메인 프로세스는 살아있어 컨테이너가 계속 `Up` 상태를 유지함   
+반면 keep-alive는 메인 프로세스가 sleep infinity이고 exec는 그 위에 추가로 연 세션이었으므로, 그 세션에서 exit해도 메인 프로세스는 살아있어 컨테이너가 계속 `Up` 상태를 유지함 
+[세션은 컨테이너 안에서 실행된 하나의 부가적인 프로세스(터미널 연결)]
 attach는 메인 프로세스 자체에 직접 연결되는 방식이라, 그 프로세스가 sleep infinity처럼 입력을 받지 않는 종류이면 아무런 반응이 없고,    
 메인 프로세스가 bash일떄 (`attach-bash-test`)에서는 `attach`로 접속하자 정상적인 대화형 셸로 동작해 `echo` 명령에 즉시 응답했고, `exit`를 입력하자   
 그 bash 프로세스(=메인 프로세스)가 실제로 종료되면서 컨테이너 전체가 `Exited (0)` 상태로 정지되었다.   
-이는 exec로 연 별도 세션에서 exit해도 컨테이너가 유지되는 것과는 다른 방식의 유지라는 점에서 대조됨   
+이는 exec로 연 별도 세션에서는는 exit해도 컨테이너가 유지되는 것과는 다른 방식의 유지라는 점에서 대조됨   
 
 <명령어 정리>    
 docker run -d --name keep-alive ubuntu sleep infinity  
