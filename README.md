@@ -714,6 +714,9 @@ VS Code에서 GitHub 계정으로 로그인 후 저장소(`song0423ricky/Codysse
 Git은 분산형 버전 관리 시스템으로 내 컴퓨터(로컬) 안에서 혼자 파일 변경(버전관리) 이력을 관리하는 로컬 도구임  
 GitHub은 그 Git 기록을 인터넷 서버에 올려 다른 사람과 공유하고 함께 협업할 수 있게 해주는 별도의 온라인 플랫폼임(원격협업 플랫폼)  
 
+<실행사진>
+![GitHub 연동 화면](Photo/github_login.png)
+
 
 <명령어 정리>    
 git --version. 
