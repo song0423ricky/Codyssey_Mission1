@@ -706,6 +706,41 @@ $ git log --oneline
 39161b6 (HEAD -> main, origin/main, origin/HEAD) Update README.md
 6c44a6d Update README.md
 b6ecaab Update README.md
+VS Code에서 GitHub 계정으로 로그인 후 저장소(song0423ricky/Codyssey_Mission1)와 연동을 완료했다.
+
+<과제목표6 - Git과 Github의 차이>
+Git은 분산형 버전 관리 시스템으로 내 컴퓨터(로컬) 안에서 혼자 파일 변경(버전관리) 이력을 관리하는 로컬 도구임
+GitHub은 그 Git 기록을 인터넷 서버에 올려 다른 사람과 공유하고 함께 협업할 수 있게 해주는 별도의 온라인 플랫폼임(원격협업 플랫폼)
+
+<실행사진> GitHub 연동 화면
+
+<명령어 정리>
+git --version. git = Git 프로그램 자체를 실행하는 기본 명령어. --version = 앞서 설명한 것과 동일한 형식의 옵션. 설치된 Git의 버전 정보 출력.
+
+git config. config = configuration,Git의 각종 설정값을 조회/변경하는 하위 명령어.
+
+git config --list. --list = 현재 적용되어 있는 모든 Git 설정 항목을 나열해서 보여줌.
+
+git status. status = 상태를 뜻하는 하위 명령어. 현재 작업 폴더의 변경사항이 Git 입장에서 어떤 상태인지(추적 안 됨/스테이징됨/커밋됨 등) 요약해서 보여줌
+
+git add .
+add = 변경된 파일을 "다음 커밋에 포함할 대상 목록(스테이징 영역)"에 등록함. . = 현재 폴더를 가리키는 기호. 여기서는 "현재 폴더 안의 모든 변경사항"을 한 번에 추가하라는 의미로 사용.
+
+git commit -m. commit = 위임하다/맡기다라는 원뜻에서 유래. 스테이징된 변경사항을 하나의 "저장 지점(스냅샷)"으로 로컬 저장소 기록에 남기는 하위 명령어. -m = message,뒤에 오는 문자열을 이 커밋에 대한 설명(커밋 메시지)으로 지정하는 옵션. 이 옵션이 없으면 편집기가 열려서 메시지를 따로 입력해야 함.
+
+git push origin main. push = 밀어넣다라는 뜻의 하위 명령어. 로컬 저장소에 쌓인 커밋들을 원격 저장소로 업로드함. origin = 원격 저장소를 가리키는 별칭. Git 저장소를 clone하거나 remote add할 때 관례적으로 붙는 기본 이름 (실제 GitHub URL 대신 이 짧은 이름을 씀). main = 업로드할 대상 브랜치의 이름. 기본 브랜치 이름으로 흔히 쓰이는 이름.
+
+git config pull.rebase false. config = 위에서 설명한 설정 관련 하위 명령어. pull.rebase = 설정 항목의 이름. "pull 작업 시 rebase 방식을 쓸지"를 결정하는 항목. false = 그 항목에 지정하는 값. "아니오(사용 안 함)"라는 뜻 → 결과적으로 기본값인 merge 방식이 적용됨. (머지가 뭐지?)
+
+git pull origin main.
+pull = 원격 저장소의 최신 커밋을 받아와서 로컬 브랜치와 합치는 작업
+origin, main = 위와 동일한 의미 (원격 저장소 별칭, 대상 브랜치 이름)
+
+git commit -m "Merge remote-tracking branch origin/main"
+위 git commit -m과 동일한 구조. 여기서는 pull 과정에서 자동으로 생성되어야 했던 "병합 커밋"을, 편집기 오류로 인해 수동으로 메시지를 지정해서 완료한 경우
+
+git push origin main (2번째)
+위와 완전히 동일한 명령어. 병합이 끝난 뒤 다시 한번 원격 저장소로 업로드를 시도해 최종적으로 성공시킨 단계
 ```
 
 VS Code에서 GitHub 계정으로 로그인 후 저장소(`song0423ricky/Codyssey_Mission1`)와 연동을 완료했다.  
